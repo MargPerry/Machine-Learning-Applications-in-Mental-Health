@@ -1,0 +1,47 @@
+---
+title: "Main code"
+author: "Margaret Perry"
+date: "November 16, 2018"
+output: pdf_document
+---
+
+```{r}
+library(haven)
+library(tidyr)
+library(dplyr)
+library(mosaic)
+```
+
+##Names (eating disorder)
+```{r}
+#library(readr)
+#eatdisord_1 <- read_csv("C:/Users/mperr/Desktop/eatdisord_1.csv")
+"Uncomment when uploading raw data however the raw dataset is too large for Git"
+```
+
+```{r}
+#Main
+eatdisord_1<- select(eatdisord_1, CPES, Eating_Disorder)
+eatdisord_1= drop_na(eatdisord_1)
+View(eatdisord_1)
+
+#CPES
+CPES_ed= select(eatdisord_1, CPES)
+View(CPES_ed)
+
+#Full_explaination
+full_name= select(eatdisord_1, Eating_Disorder)
+View(full_name)
+
+#Make it a list
+namelist = as.list(full_name)
+print(namelist)
+' We did not need this and can join on just the CPES code and maintain the information of the varible'
+```
+
+##Making Subset(eating disorder)
+
+```{r}
+test_ed= select(raw_data, CPES_ed$CPES[1:64])
+View(test_ed)
+```

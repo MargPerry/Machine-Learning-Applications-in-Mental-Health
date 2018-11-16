@@ -1,0 +1,70 @@
+---
+title: "Cleaning attempts"
+author: "Margaret Perry"
+date: "November 16, 2018"
+output: pdf_document
+---
+
+```{r}
+#eating disorder 
+eatdis1 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 4657:4658, NA)
+eatdis2 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 4665:4666, NA)
+eatdis3 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 4668:4669, NA)
+eatdis4 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 4683:4692, NA)
+eatdis5 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 4703:4709, NA)
+eatdis6 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 4733:4737, NA)
+eatdis <- rbind(eatdis1, eatdis2, eatdis3, eatdis4, eatdis5, eatdis6)
+eatdis <- unite(eatdis, "NA","Variable","O","n", sep="")
+
+#social phobia
+sopho1<- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 1504:1517, NA)
+sopho2<- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 1529:1557, NA)
+sopho3<- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 1601:1609, NA)
+sopho4<- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 1615:1617, NA)
+sopho <- rbind(sopho1, sopho2, sopho3, sopho4)
+sopho <- unite(sopho, "NA","Variable","O","n", sep="")
+
+#suicidality
+suici<- data.frame(c("VO1993","VO1994","VO1995","VO1996","VO1998","VO2044","VO2045","VO2002","VO2005","VO2024","VO2026", "VO2035"))
+
+#substance abuse, including tobacco, drugs, alcohol? skeptical 
+subabu1 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 4621:4634, NA)
+subabu1 <- unite(subabu1, "NA","Variable","O","n", sep="")
+subabu2 <- data.frame(c("VO7522","VO7521","VO7833", "V03330", "V03331","V03332","V03333","V03335","V03336","V03347","V03348","V03425","V03434","V03435","V03437","V03439","V03440","V03441","V09215", "V04594","V04596", "V9353", "V04597","V04601"))
+
+#personality 
+person1 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 3221:3241, NA)
+person2 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 3243:3265, NA)
+person <- rbind(person1,person2)
+person <- unite(person, "NA","Variable","O","n", sep="")
+
+#marriage?
+
+#social networks and friends 
+socnet1 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 5501:5510, NA)
+socnet2 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 5512:5516, NA)
+socnet <- rbind(socnet1,socnet2)
+socnet <- unite(socnet, "NA","Variable","O","n", sep="")
+
+#family cohesion
+family1 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 6816:6821, NA)
+family2 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 6829:6831, NA)
+family3 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 6523:6537, NA)
+family <- rbind(family1,family2,family3)
+family <- unite(family, "NA","Variable","O","n", sep="")
+
+#nervous attack?
+
+#discrimination
+discrimination1 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 6538:6546, NA)
+discrimination2 <- data.frame("Variable"=c("V"), "O" = c("O"), "n" = 6550:6552, NA)
+discrimination <- rbind(discrimination1,discrimination2)
+discrimination <- unite(discrimination, "NA","Variable","O","n", sep="")
+discrimination <- rbind(discrimination,c("V06548"))
+
+#demographics
+demo <- data.frame(c("VO5700", "VO9387", "VO9389","VO3085","VO9390", "VO9414","VO9413", "VO9409", "VO9402"))
+
+```
+
+
