@@ -216,11 +216,13 @@ sample1= data_alco%>%
   sample_n(1000)
 a <- ggplot(sample1, aes(V08312))+geom_histogram()
 a
+#Plot "a" demonstrates the data within the V08312 variable (that represents "ICD Alcohol Dependence (30 day)"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"
 ```
 
 ```{r}
 b <- ggplot(sample1, aes(V08515))+geom_histogram()
 b
+#Plot "b" demonstrates the data within the V08515 variable (that represents "ICD Alcohol Dependence (Lifetime)"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"
 ```
 
 ```{r}
@@ -228,9 +230,11 @@ sample2= data_su%>%
   sample_n(1000)
 c <- ggplot(sample2, aes(V03336))+geom_histogram()
 c
+#Plot "c" demonstrates the data within the V03336 variable (that represents "Used marijuana/hash before teens"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"
 ```
 
 ```{r}
 d <- ggplot(sample2, aes(V03290)) +geom_histogram()
 d
+#Plot "d" demonstrates the data within the V03290 variable (that represents "Age 1st drinking problem occured"), which contains numerical data, the x-axis is meant to show the age range for the question.
 ```
