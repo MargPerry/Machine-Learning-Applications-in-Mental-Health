@@ -214,13 +214,23 @@ data_sui= select(raw_data, namelist_sui$CPES[1:12])
 ```{r}
 sample1= data_alco%>%
   sample_n(1000)
-b <- ggplot(sample1, aes(V08312))+geom_histogram()
+a <- ggplot(sample1, aes(V08312))+geom_histogram()
+a
+```
+
+```{r}
+b <- ggplot(sample1, aes(V08515))+geom_histogram()
 b
 ```
 
 ```{r}
 sample2= data_su%>%
   sample_n(1000)
-a <- ggplot(sample2, aes(V03336))+geom_histogram()
-a
+c <- ggplot(sample2, aes(V03336))+geom_histogram()
+c
+```
+
+```{r}
+d <- ggplot(sample2, aes(V03290)) +geom_histogram()
+d
 ```
