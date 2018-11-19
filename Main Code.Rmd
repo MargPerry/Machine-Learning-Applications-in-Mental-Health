@@ -20,7 +20,11 @@ library(ggplot2)
 ```{r}
 library(readr)
 library(haven)
+<<<<<<< HEAD
 raw_data <- read_sav("C:/Users/rocio/Downloads/20240-0001-Data.sav")
+=======
+raw_data <- read_sav("~/20240-0001-Data.sav")
+>>>>>>> 9f42ce87ef64fa276feec6dc649c9561a2bbaefc
 eatdisord_1 <- read_csv("Variblenamefiles/eatdisord_1.csv")
 sub_use_1 <- read_csv("Variblenamefiles/sub_use_1.csv")
 socnet<- read_csv("Variblenamefiles/socialnetworks.csv")
@@ -67,7 +71,7 @@ namelist = as.list(full_name)
 
 ```{r}
 data_ed= select(raw_data, CPES_ed$CPES[1:64])
-View(test_ed)
+View(data_ed)
 ```
 
 #Substance varibles 
@@ -241,3 +245,45 @@ text(tree_alco)
 train
 ```
 
+<<<<<<< HEAD
+=======
+#DATA IMAGES
+```{r}
+sample1= data_alco%>%
+  sample_n(1000)
+a <- ggplot(sample1, aes(V08312))+geom_histogram()
+a
+```
+
+```{r}
+b <- ggplot(sample1, aes(V08515))+geom_histogram()
+b
+```
+
+```{r}
+sample2= data_su%>%
+  sample_n(1000)
+c <- ggplot(sample2, aes(V03336))+geom_histogram()
+c
+```
+
+```{r}
+d <- ggplot(sample2, aes(V03290)) +geom_histogram()
+d
+```
+
+```{r}
+sample3 = data_sph %>%
+  sample_n(1000)
+e <- ggplot(sample3, aes(V01533))+geom_histogram()  #social fear situation - fear vomiting
+e
+```
+
+```{r}
+f <- ggplot(sample3, aes(V01511)) + geom_histogram() #Shy/afraid/uncomf entering room when others are present
+f
+```
+
+By looking at several sample variables in our data through histogram visualization, we have learned that in our data we have numerical variables, but there are bunch of categorical variables, (Yes or No). In our visualization of categorical variable, 1 indicates "Yes" and 5 indicates "No"" in x-axis, and we have different ranges of scales for y-axis. In our numerical variables, we have different scales in x and y-axis.
+
+>>>>>>> 9f42ce87ef64fa276feec6dc649c9561a2bbaefc

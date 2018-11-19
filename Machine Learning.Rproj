@@ -7,11 +7,7 @@ AlwaysSaveHistory: Default
 EnableCodeIndexing: Yes
 UseSpacesForTab: Yes
 NumSpacesForTab: 2
-<<<<<<< HEAD
-Encoding: ISO8859-1
-=======
 Encoding: UTF-8
->>>>>>> 9f42ce87ef64fa276feec6dc649c9561a2bbaefc
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
