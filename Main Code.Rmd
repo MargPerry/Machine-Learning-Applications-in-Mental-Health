@@ -234,3 +234,18 @@ c
 d <- ggplot(sample2, aes(V03290)) +geom_histogram()
 d
 ```
+
+```{r}
+sample3 = data_sph %>%
+  sample_n(1000)
+e <- ggplot(sample3, aes(V01533))+geom_histogram()  #social fear situation - fear vomiting
+e
+```
+
+```{r}
+f <- ggplot(sample3, aes(V01511)) + geom_histogram() #Shy/afraid/uncomf entering room when others are present
+f
+```
+
+By looking at several sample variables in our data through histogram visualization, we have learned that in our data we have numerical variables, but there are bunch of categorical variables, (Yes or No). In our visualization of categorical variable, 1 indicates "Yes" and 5 indicates "No"" in x-axis, and we have different ranges of scales for y-axis. In our numerical variables, we have different scales in x and y-axis.
+
