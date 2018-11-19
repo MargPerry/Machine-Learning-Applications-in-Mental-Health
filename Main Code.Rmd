@@ -229,7 +229,7 @@ data_sui
 alco = cbind(data_dep, data_alco)
 alco
 alco = alco%>%
-  mutate(Depressed = as.factor(ifelse(V07876 == 1, "Yes", "No")))
+  mutate(Depressed = as.factor(ifelse(V07876 == 1, 1, 0)))
 set.seed(1)
 train = alco %>%
   sample_n(10000)
@@ -243,6 +243,29 @@ tree_alco
 plot(tree_alco)
 text(tree_alco)
 train
+
+#logistic regression
+glm_fit = glm(Depressed~. - V07876,
+data = train,
+family = binomial)
+summary(glm_fit)
+coefficients(glm_fit)
+
+#a combination of depression, alcohol use, suicidality, and nervousness
+#V01993: Seriously thought about committing suicide
+#V02044: Ever attempted suicide
+#V08312: ICD Alcohol Dependence (30 day)
+combo1 <- cbind(data_dep, data_alco, data_sui, data_nerv)
+combo1 <- combo1%>%
+    mutate(Depressed = as.factor(ifelse(V07876 == 1, 1, 0)))
+
+
+#LOGISTIC REGRESSION
+glm_fit = glm(Depressed~ V01993 + V02044 + V08312,
+  data = combo1,
+  family = binomial)
+summary(glm_fit)
+coefficients(glm_fit)
 ```
 
 <<<<<<< HEAD
