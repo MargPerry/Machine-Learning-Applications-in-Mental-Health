@@ -5,7 +5,7 @@ date: "November 16, 2018"
 output: pdf_document
 ---
 
-```{r, echo=FALSE}
+```{r}
 library(haven)
 library(tidyr)
 library(dplyr)
@@ -214,7 +214,7 @@ namelist_sui = as.list(suicide)
 data_sui= select(raw_data, namelist_sui$CPES[1:12])
 ```
 
-#Tree Models
+#Models
 ```{r}
 #tree model using alcohol as a predictor
 alco = cbind(data_dep, data_alco)
@@ -311,12 +311,12 @@ summary(data_ed[1:25])
 In this numeric summary of the first 25 variables in eating disorder the first thing to note is the immense amount of NA's or missing data. In another class we were discussing the issues of the different types of missing data, missing completely at random, missing at random, and missing not at random. I am curious if there is a way to tell what kind of missing data we have isn't none of us are experts in the field. It also brings up the question of what is the most appropriate way to deal with these missing vaules? It is also likely that we will remove Varibles with a high proportion of missing vaules  
 Another take away from the summaries is from the means. For the variables that are only between 1 and 5 these are the yes or no questions on the survey, 1 being yes and 5 being no, the mean can tell us the proption of yes or nos in the varibles by seeing if the mean is closer to 1 or 5.
 
-
+##Alcohol
 
 ```{r}
 summary(data_alco[1:5])
 ```
-
+We can see that 3 of the 5 varibles are binary and have a large marjority of nos. They may not be useful because of this and may skew our data or provide unuseful noise. However the last two are mostly missing vaules and will likely lack substancial the about of observations needed to draw any vaild conclusions. 
 
 ## Social Phobia
 
@@ -326,4 +326,20 @@ summary(data_sph[1:25])
 
 In the numerical summaries in social phobia variable, there are only four numerical variables in the first 25 variables. We can figure out that this dataset has lots of categorical variables in here too. Also there are lots of NA’s values. The mean of each categorical variable indicates the proportion of Yes or No in the variable. If the mean value is close to 1, the variables are dominated by the answer Yes. If the mean value is far from 1, the variables are dominated by NO. 
 
+## Suicide 
+
+```{r}
+#Seriously thought about committing suicide
+summary(subset(data_sui, select=V01993))
+#Age 1st thought seriously about committing suicide
+summary(subset(data_sui, select=V01994))
+#Seriously thought about committing suicide in past 12 months
+summary(subset(data_sui, select=V01995))
+# Age last seriously thought about suicide
+summary(subset(data_sui, select=V01996))
+#Age 1st made suicide plan
+summary(subset(data_sui, select=V01998))
+```
+
+From the numerical summaries of these variables from the Suicide subset of the data we can see that there are some categorical variables, but most are numerical that depend on a larger range of numbers, and in this case the numbers represent the ages of the people involved in the studies. With our data we learn that most people said “no” to seriously committing suicide both in the last 12 months and at all. But from the other variables we can see that the people that have thought about committing suicide had these thoughts in their 20s. There are many NA values, so the summaries don’t represent all of the observations from the data.
 
