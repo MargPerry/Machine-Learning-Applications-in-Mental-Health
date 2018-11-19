@@ -227,14 +227,12 @@ train = alco %>%
   sample_n(10000)
 test = alco %>%
   setdiff(train)
-tree_alco = tree(Depressed ~ . - V07876, train, na.action = na.tree.replace)
 tree_alco=tree(Depressed~., train)
 tree_alco
 summary(tree_alco)
 tree_alco
-plot(tree_alco)
-text(tree_alco)
-train
+#plot(tree_alco)
+#text(tree_alco)
 
 #logistic regression
 glm_fit = glm(Depressed~. - V07876,
@@ -259,7 +257,6 @@ glm_fit = glm(Depressed~ V01993 + V02044 + V08312,
 summary(glm_fit)
 coefficients(glm_fit)
 
-ggplot(data )
 ```
 
 
