@@ -4,8 +4,18 @@ author: "Margaret Perry"
 date: "November 16, 2018"
 output: pdf_document
 ---
+From the numerical summaries of these variables from the Suicide subset of the data we can see that there are some categorical variables, but most are numerical that depend on a larger range of numbers, and in this case the numbers represent the ages of the people involved in the studies. With our data we learn that most people said ìnoî to seriously committing suicide both in the last 12 months and at all. But from the other variables we can see that the people that have thought about committing suicide had these thoughts in their 20s. There are many NA values, so the summaries donít represent all of the observations from the data.
 
-```{r, echo=FALSE}
+We also realize that we need to convert some numeric values to binary categorical values, for instance, there are two numbers, 1(no) and 5(yes), are used for indicating ICD alcohol dependence (lifetime). But we believe it will be confusing to use it as numeric and we want to convert it into a categorical variable. This is important to make sure about our consistency in treating variables with two categories as categorical, and treating variables with multiple categories as numeric. There is a huge inconsistency in the values available for observations used in different categories. For instance, it is hard to compare the data from variables under category ìeating disorderî with variables from category ìfamily cohesionî due to two datasets being actually collected from two separate surveys. Even though these two datasets were compiled together, it shows that the observations from one survey do not necessarily include variables from another survey. Therefore, we believe that it is essential for us to go back to our cross-walk original dataset again to select variables that are all from the same survey, instead of the collaborative survey that contains observations from other surveys. 
+
+The same problem is also shown when we tried to use tree decision as our main model. We were very excited to use tree decision model, however, our model turned out to be a disaster. We only got one node and arenít sure the cause. We believe that it might be due to missing values in ou data.  Our data worked well with KNN, mainly because KNN does not have any assumptions. The only obstacle was that we were required to filter out observations that had any missing values, however this still left us with over 1,500 for the method. As for logistic regression, our data met the assumption that the response variable is binary. We also tested on large enough data (a sample of 1670). However, we are concerned about potential multicollinearity, such as seriously contemplating suicide and actually attempting suicide. It may suffice that we pick only one of these variables. 
+
+We believe that we are having major issues with the variables we are using right now. Many numeric variables containing only two values should be converted into categorical variables. And we need to revisit our initial category and variable selection by making sure all variables are from the same survey, instead of the collaborative survey. Even though it is painful to acknowledge this mistake we made earlier on about variable selection, we have learned a lot about reading and understanding complex collaborative survey datasets. And then we will try tree decision or logistic model again. 
+
+Works Cited
+https://www.statisticssolutions.com/assumptions-of-logistic-regression/
+
+```{r, results='hide'}
 library(haven)
 library(tidyr)
 library(dplyr)
@@ -13,18 +23,15 @@ library(mosaic)
 library(tree)
 library(ISLR)
 library(ggplot2)
+library(class)
 
 ```
 
 ##Names (eating disorder)
-```{r}
+```{r, results='hide'}
 library(readr)
 library(haven)
-<<<<<<< HEAD
 raw_data <- read_sav("C:/Users/rocio/Downloads/20240-0001-Data.sav")
-=======
-raw_data <- read_sav("~/20240-0001-Data.sav")
->>>>>>> 9f42ce87ef64fa276feec6dc649c9561a2bbaefc
 eatdisord_1 <- read_csv("Variblenamefiles/eatdisord_1.csv")
 sub_use_1 <- read_csv("Variblenamefiles/sub_use_1.csv")
 socnet<- read_csv("Variblenamefiles/socialnetworks.csv")
@@ -45,7 +52,7 @@ suicide<- read_csv("Variblenamefiles/Suicide.csv")
 "Uncomment when uploading raw data however the raw dataset is too large for Git"
 ```
 
-```{r}
+```{r, results='hide'}
 #Read in Var names
 
 #Main
@@ -69,13 +76,13 @@ namelist = as.list(full_name)
 
 ##Making Subset(eating disorder)
 
-```{r}
+```{r, results='hide'}
 data_ed= select(raw_data, CPES_ed$CPES[1:64])
 View(data_ed)
 ```
 
 #Substance varibles 
-```{r}
+```{r, results='hide'}
 #Main
 sub_use_1<- select(sub_use_1, CPES)
 sub_use_1= drop_na(sub_use_1)
@@ -87,7 +94,7 @@ data_su= select(raw_data, sub_use_1$CPES[1:70])
 ```
 
 #Tobacco
-```{r}
+```{r, results='hide'}
 #Main
 tobacco_1<- select(tobacco_1, CPES)
 tobacco_1= drop_na(tobacco_1)
@@ -97,7 +104,7 @@ data_to= select(raw_data, tobacco_1$CPES[1:65])
 ```
 
 #Social Phobia
-```{r}
+```{r, results='hide'}
 #Main
 social_ph<- select(social_ph, CPES)
 social_ph= drop_na(social_ph)
@@ -107,7 +114,7 @@ data_sph= select(raw_data, social_ph$CPES[1:87])
 ```
 
 #Personality
-```{r}
+```{r, results='hide'}
 #Main
 persona<- select(persona, CPES)
 persona= drop_na(persona)
@@ -117,7 +124,7 @@ data_per= select(raw_data, namelist_per$CPES[1:44])
 ```
 
 #Marriage
-```{r}
+```{r, results='hide'}
 #Main
 marriage<- select(marriage, CPES)
 marriage= drop_na(marriage)
@@ -128,7 +135,7 @@ data_mar= select(raw_data, namelist_mar$CPES[1:29])
 
 #Social Networks
 
-```{r}
+```{r, results='hide'}
 #Main
 socnet<- select(socnet, CPES)
 socnet= drop_na(socnet)
@@ -138,7 +145,7 @@ data_sn= select(raw_data, namelist_sn$CPES[1:15])
 ```
 
 #Nervous Attack
-```{r}
+```{r, results='hide'}
 #Main
 ner_at<- select(ner_at, CPES)
 ner_at= drop_na(ner_at)
@@ -149,7 +156,7 @@ data_nerv= select(raw_data, namelist_nerv$CPES[1:23])
 
 #Discrimination
 
-```{r}
+```{r, results='hide'}
 #Main
 discrim<- select(discrim, CPES)
 discrim= drop_na(discrim)
@@ -159,7 +166,7 @@ data_disc= select(raw_data, namelist_disc$CPES[1:13])
 ```
 
 #Demographics
-```{r}
+```{r, results='hide'}
 #Main
 demograph<- select(demograph, CPES)
 demograph= drop_na(demograph)
@@ -170,120 +177,231 @@ data_dem= select(raw_data, namelist_dem$CPES[1:14])
 
 #Family Cohesion
 
-```{r}
+```{r, results='hide'}
 #Main
 family<- select(family, CPES)
 family= drop_na(family)
 #Make it a list
 namelist_fam = as.list(family)
 data_fam= select(raw_data, namelist_fam$CPES[1:15])
-data_fam
 ```
 #Family and Friends
-```{r}
+```{r, results='hide'}
 #Main
 family_n_friends<- select(family_n_friends, CPES)
 family_n_friends= drop_na(family_n_friends)
 #Make it a list
 namelist_ff = as.list(family_n_friends)
 data_ff= select(raw_data, namelist_ff$CPES[1:39])
-data_ff
 ```
 #Depression Espoide
-```{r}
+```{r, results='hide'}
 #Main
 depress<- select(depress, CPES)
 depress= drop_na(depress)
 #Make it a list
 namelist_dep = as.list(depress)
 data_dep= select(raw_data, namelist_dep$CPES[1:5])
-data_dep
 ```
 
 #Alcohol
-```{r}
+```{r, results='hide'}
 #Main
 alcohol<- select(alcohol, CPES)
 alcohol= drop_na(alcohol)
 #Make it a list
 namelist_alco = as.list(alcohol)
 data_alco= select(raw_data, namelist_alco$CPES[1:5])
-data_alco
 ```
 
 
 #Suicide
-```{r}
+```{r, results='hide'}
 #Main
 suicide<- select(suicide, CPES)
 suicide= drop_na(suicide)
 #Make it a list
 namelist_sui = as.list(suicide)
 data_sui= select(raw_data, namelist_sui$CPES[1:12])
-data_sui
 ```
 
-#Tree Models
-```{r}
+#Tree and Logistic Models
+```{r, results='hide'}
 #tree model using alcohol as a predictor
 alco = cbind(data_dep, data_alco)
 alco
 alco = alco%>%
-  mutate(Depressed = as.factor(ifelse(V07876 == 1, "Yes", "No")))
+  mutate(Depressed = as.factor(ifelse(V07876 == 1, 1, 0)))
 set.seed(1)
 train = alco %>%
   sample_n(10000)
 test = alco %>%
   setdiff(train)
-tree_alco = tree(Depressed ~ . - V07876, train, na.action = na.tree.replace)
 tree_alco=tree(Depressed~., train)
 tree_alco
 summary(tree_alco)
 tree_alco
-plot(tree_alco)
-text(tree_alco)
-train
+#plot(tree_alco)
+#text(tree_alco)
+
+#logistic regression
+glm_fit = glm(Depressed~. - V07876,
+data = train,
+family = binomial)
+summary(glm_fit)
+coefficients(glm_fit)
+
+#a combination of depression, alcohol use, suicidality, and nervousness
+#V01993: Seriously thought about committing suicide
+#V02044: Ever attempted suicide
+#V08312: ICD Alcohol Dependence (30 day)
+combo1 <- cbind(data_dep, data_alco, data_sui, data_nerv)
+combo1 <- combo1%>%
+    mutate(Depressed = as.factor(ifelse(V07876 == 1, 1, 0)))
+
+
+#LOGISTIC REGRESSION
+glm_fit = glm(Depressed~ V01993 + V02044 + V08312,
+  data = combo1,
+  family = binomial)
+summary(glm_fit)
+coefficients(glm_fit)
+
 ```
 
-<<<<<<< HEAD
-=======
+
+#KNN using suicide, alcohol abuse, and personality
+```{r, results='hide'}
+
+combo2 <- cbind(data_alco, data_per, data_sui, data_dep)%>%
+  select(V07876, V03234,V01993, V02044, V08312, V03256)
+combo2 =  na.omit(combo2)
+
+
+#V03234: Often feel empty inside
+#V01993: Seriously thought about committing suicide
+#V02044: Ever attempted suicide
+#V08312: ICD Alcohol Dependence (30 day)
+#V03256: Feel uncomfortabe/helpless when alone
+
+
+train_obvs = combo2 %>%
+  slice(1:800) %>%
+  select(V03234,V01993, V02044, V08312, V03256)
+
+
+test_obvs = combo2 %>%
+  slice(801:n())%>%
+  select(V03234,V01993, V02044, V08312, V03256)
+
+
+train_Depression =  combo2%>%
+  slice(1:800) %>%
+  select(V07876) %>%
+  .$V07876
+
+test_Depression =  combo2%>%
+  slice(801:n()) %>%
+  select(V07876) %>%
+  .$V07876
+
+
+set.seed(1)
+knn_pred = knn(train_obvs,
+  test_obvs,
+  train_Depression,
+  k = 5)
+
+combo2
+
+summary(knn_pred)
+table(knn_pred, test_Depression)
+mean(knn_pred == test_Depression)
+```
+
+
+
 #DATA IMAGES
-```{r}
+```{r, results='hide'}
 sample1= data_alco%>%
   sample_n(1000)
 a <- ggplot(sample1, aes(V08312))+geom_histogram()
 a
+#Plot "a" demonstrates the data within the V08312 variable (that represents "ICD Alcohol Dependence (30 day)"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"
 ```
 
-```{r}
+```{r, results='hide'}
 b <- ggplot(sample1, aes(V08515))+geom_histogram()
 b
+#Plot "b" demonstrates the data within the V08515 variable (that represents "ICD Alcohol Dependence (Lifetime)"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"
 ```
 
-```{r}
+```{r, results='hide'}
 sample2= data_su%>%
   sample_n(1000)
 c <- ggplot(sample2, aes(V03336))+geom_histogram()
 c
+#Plot "c" demonstrates the data within the V03336 variable (that represents "Used marijuana/hash before teens"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"
 ```
 
-```{r}
+```{r, results='hide'}
 d <- ggplot(sample2, aes(V03290)) +geom_histogram()
 d
+#Plot "d" demonstrates the data within the V03290 variable (that represents "Age 1st drinking problem occured"), which contains numerical data, the x-axis is meant to show the age range for the question.
 ```
 
-```{r}
+```{r, results='hide'}
 sample3 = data_sph %>%
   sample_n(1000)
 e <- ggplot(sample3, aes(V01533))+geom_histogram()  #social fear situation - fear vomiting
 e
 ```
 
-```{r}
+```{r, results='hide'}
 f <- ggplot(sample3, aes(V01511)) + geom_histogram() #Shy/afraid/uncomf entering room when others are present
 f
 ```
 
 By looking at several sample variables in our data through histogram visualization, we have learned that in our data we have numerical variables, but there are bunch of categorical variables, (Yes or No). In our visualization of categorical variable, 1 indicates "Yes" and 5 indicates "No"" in x-axis, and we have different ranges of scales for y-axis. In our numerical variables, we have different scales in x and y-axis.
 
->>>>>>> 9f42ce87ef64fa276feec6dc649c9561a2bbaefc
+#Numeric summaries
+
+##Eating disorder
+```{r, results='hide'}
+summary(data_ed[1:25])
+```
+In this numeric summary of the first 25 variables in eating disorder the first thing to note is the immense amount of NA's or missing data. In another class we were discussing the issues of the different types of missing data, missing completely at random, missing at random, and missing not at random. I am curious if there is a way to tell what kind of missing data we have isn't none of us are experts in the field. It also brings up the question of what is the most appropriate way to deal with these missing vaules? It is also likely that we will remove Varibles with a high proportion of missing vaules  
+Another take away from the summaries is from the means. For the variables that are only between 1 and 5 these are the yes or no questions on the survey, 1 being yes and 5 being no, the mean can tell us the proption of yes or nos in the varibles by seeing if the mean is closer to 1 or 5.
+
+##Alcohol
+
+```{r, results='hide'}
+summary(data_alco[1:5])
+```
+Three of the five varibles appear to be Yes or No survey questions with the majority of the responses being nos, and we can tell this because the means are extremely close to 5. This could be a concern as it means that there is little variation in the responses and so the varibles may not provide that much information. The other two varibles have a great deal of missing data, and so may lack any significant information.
+
+## Suicide 
+
+```{r, results='hide'}
+#Seriously thought about committing suicide
+summary(subset(data_sui, select=V01993))
+#Age 1st thought seriously about committing suicide
+summary(subset(data_sui, select=V01994))
+#Seriously thought about committing suicide in past 12 months
+summary(subset(data_sui, select=V01995))
+# Age last seriously thought about suicide
+summary(subset(data_sui, select=V01996))
+#Age 1st made suicide plan
+summary(subset(data_sui, select=V01998))
+```
+From the numerical summaries of these variables from the Suicide subset of the data we can see that there are some categorical variables, but most are numerical that depend on a larger range of numbers, and in this case the numbers represent the ages of the people involved in the studies. With our data we learn that most people said ‚Äúno‚Äù to seriously committing suicide both in the last 12 months and at all. But from the other variables we can see that the people that have thought about committing suicide had these thoughts in their 20s. There are many NA values, so the summaries don‚Äôt represent all of the observations from the data.
+
+## Social Phobia
+
+```{r, results='hide'}
+summary(data_sph[1:25])
+```
+
+In the numerical summaries in social phobia variable, there are only four numerical variables in the first 25 variables. We can figure out that this dataset has lots of categorical variables in here too. Also there are lots of NA‚Äôs values. The mean of each categorical variable indicates the proportion of Yes or No in the variable. If the mean value is close to 1, the variables are dominated by the answer Yes. If the mean value is far from 1, the variables are dominated by NO. 
+
+

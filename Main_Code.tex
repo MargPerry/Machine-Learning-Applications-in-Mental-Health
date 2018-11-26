@@ -1,0 +1,1272 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{eurosym}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Main code},
+            pdfauthor={Margaret Perry},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Main code}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Margaret Perry}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{November 16, 2018}
+
+
+\begin{document}
+\maketitle
+
+From the numerical summaries of these variables from the Suicide subset
+of the data we can see that there are some categorical variables, but
+most are numerical that depend on a larger range of numbers, and in this
+case the numbers represent the ages of the people involved in the
+studies. With our data we learn that most people said ``no'' to
+seriously committing suicide both in the last 12 months and at all. But
+from the other variables we can see that the people that have thought
+about committing suicide had these thoughts in their 20s. There are many
+NA values, so the summaries don't represent all of the observations from
+the data.
+
+We also realize that we need to convert some numeric values to binary
+categorical values, for instance, there are two numbers, 1(no) and
+5(yes), are used for indicating ICD alcohol dependence (lifetime). But
+we believe it will be confusing to use it as numeric and we want to
+convert it into a categorical variable. This is important to make sure
+about our consistency in treating variables with two categories as
+categorical, and treating variables with multiple categories as numeric.
+There is a huge inconsistency in the values available for observations
+used in different categories. For instance, it is hard to compare the
+data from variables under category ``eating disorder'' with variables
+from category ``family cohesion'' due to two datasets being actually
+collected from two separate surveys. Even though these two datasets were
+compiled together, it shows that the observations from one survey do not
+necessarily include variables from another survey. Therefore, we believe
+that it is essential for us to go back to our cross-walk original
+dataset again to select variables that are all from the same survey,
+instead of the collaborative survey that contains observations from
+other surveys.
+
+The same problem is also shown when we tried to use tree decision as our
+main model. We were very excited to use tree decision model, however,
+our model turned out to be a disaster. We only got one node and aren't
+sure the cause. We believe that it might be due to missing values in ou
+data. Our data worked well with KNN, mainly because KNN does not have
+any assumptions. The only obstacle was that we were required to filter
+out observations that had any missing values, however this still left us
+with over 1,500 for the method. As for logistic regression, our data met
+the assumption that the response variable is binary. We also tested on
+large enough data (a sample of 1670). However, we are concerned about
+potential multicollinearity, such as seriously contemplating suicide and
+actually attempting suicide. It may suffice that we pick only one of
+these variables.
+
+We believe that we are having major issues with the variables we are
+using right now. Many numeric variables containing only two values
+should be converted into categorical variables. And we need to revisit
+our initial category and variable selection by making sure all variables
+are from the same survey, instead of the collaborative survey. Even
+though it is painful to acknowledge this mistake we made earlier on
+about variable selection, we have learned a lot about reading and
+understanding complex collaborative survey datasets. And then we will
+try tree decision or logistic model again.  Works Cited
+\url{https://www.statisticssolutions.com/assumptions-of-logistic-regression/}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(haven)}
+\KeywordTok{library}\NormalTok{(tidyr)}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(mosaic)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: ggformula
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: ggplot2
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: ggstance
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'ggstance'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:ggplot2':
+## 
+##     geom_errorbarh, GeomErrorbarh
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## New to ggformula?  Try the tutorials: 
+##  learnr::run_tutorial("introduction", package = "ggformula")
+##  learnr::run_tutorial("refining", package = "ggformula")
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: mosaicData
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: Matrix
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'Matrix'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:tidyr':
+## 
+##     expand
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## The 'mosaic' package masks several functions from core packages in order to add 
+## additional features.  The original behavior of these functions should not be affected by this.
+## 
+## Note: If you use the Matrix package, be sure to load it BEFORE loading mosaic.
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'mosaic'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:Matrix':
+## 
+##     mean
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:ggplot2':
+## 
+##     stat
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:dplyr':
+## 
+##     count, do, tally
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     binom.test, cor, cor.test, cov, fivenum, IQR, median,
+##     prop.test, quantile, sd, t.test, var
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     max, mean, min, prod, range, sample, sum
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tree)}
+\KeywordTok{library}\NormalTok{(ISLR)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(class)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Names (eating disorder)}\label{names-eating-disorder}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(readr)}
+\KeywordTok{library}\NormalTok{(haven)}
+\NormalTok{raw_data <-}\StringTok{ }\KeywordTok{read_sav}\NormalTok{(}\StringTok{"C:/Users/rocio/Downloads/20240-0001-Data.sav"}\NormalTok{)}
+\NormalTok{eatdisord_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/eatdisord_1.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+\end{verbatim}
+
+\begin{verbatim}
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sub_use_}\DecValTok{1}\NormalTok{ <-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/sub_use_1.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{socnet<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/socialnetworks.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tobacco_}\DecValTok{1}\NormalTok{<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/Tobacco_1.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{alcohol<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/alcohol.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{social_ph<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/Soicalph_1.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{persona<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/personality_1.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{marriage<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/marriage.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ner_at<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/nervous_attack.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{discrim<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/discrimination.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{demograph<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/demographics.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{family<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/family.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{family_n_friends<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/family_n_friends.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{depress<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/depression.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23], 'X24' [24],
+## 'X25' [25], 'X26' [26]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{suicide<-}\StringTok{ }\KeywordTok{read_csv}\NormalTok{(}\StringTok{"Variblenamefiles/Suicide.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4], 'X5' [5],
+## 'X6' [6], 'X7' [7], 'X8' [8], 'X9' [9], 'X10' [10], 'X11' [11], 'X12' [12],
+## 'X13' [13], 'X14' [14], 'X15' [15], 'X16' [16], 'X17' [17], 'X18' [18],
+## 'X19' [19], 'X20' [20], 'X21' [21], 'X22' [22], 'X23' [23]
+\end{verbatim}
+
+\begin{verbatim}
+## Parsed with column specification:
+## cols(
+##   .default = col_character()
+## )
+## See spec(...) for full column specifications.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\StringTok{"Uncomment when uploading raw data however the raw dataset is too large for Git"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Read in Var names}
+
+\CommentTok{#Main}
+\NormalTok{eatdisord_}\DecValTok{1}\NormalTok{<-}\StringTok{ }\KeywordTok{select}\NormalTok{(eatdisord_}\DecValTok{1}\NormalTok{, CPES, Eating_Disorder)}
+\NormalTok{eatdisord_}\DecValTok{1}\NormalTok{=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(eatdisord_}\DecValTok{1}\NormalTok{)}
+\KeywordTok{View}\NormalTok{(eatdisord_}\DecValTok{1}\NormalTok{)}
+
+\CommentTok{#CPES}
+\NormalTok{CPES_ed=}\StringTok{ }\KeywordTok{select}\NormalTok{(eatdisord_}\DecValTok{1}\NormalTok{, CPES)}
+\KeywordTok{View}\NormalTok{(CPES_ed)}
+
+\CommentTok{#Full_explaination}
+\NormalTok{full_name=}\StringTok{ }\KeywordTok{select}\NormalTok{(eatdisord_}\DecValTok{1}\NormalTok{, Eating_Disorder)}
+\KeywordTok{View}\NormalTok{(full_name)}
+
+\CommentTok{#Make it a list}
+\NormalTok{namelist =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(full_name)}
+\StringTok{'print(namelist)'}
+\StringTok{' We did not need this and can join on just the CPES code and maintain the information of the varible'}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Making Subset(eating
+disorder)}\label{making-subseteating-disorder}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data_ed=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, CPES_ed}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{64}\NormalTok{])}
+\KeywordTok{View}\NormalTok{(data_ed)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Substance varibles}\label{substance-varibles}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{sub_use_}\DecValTok{1}\NormalTok{<-}\StringTok{ }\KeywordTok{select}\NormalTok{(sub_use_}\DecValTok{1}\NormalTok{, CPES)}
+\NormalTok{sub_use_}\DecValTok{1}\NormalTok{=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(sub_use_}\DecValTok{1}\NormalTok{)}
+\CommentTok{#View(sub_use_1)}
+
+\CommentTok{#Make it a list}
+\NormalTok{namelist_su =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(sub_use_}\DecValTok{1}\NormalTok{)}
+\NormalTok{data_su=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, sub_use_}\DecValTok{1}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{70}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Tobacco}\label{tobacco}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{tobacco_}\DecValTok{1}\NormalTok{<-}\StringTok{ }\KeywordTok{select}\NormalTok{(tobacco_}\DecValTok{1}\NormalTok{, CPES)}
+\NormalTok{tobacco_}\DecValTok{1}\NormalTok{=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(tobacco_}\DecValTok{1}\NormalTok{)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_to =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(tobacco_}\DecValTok{1}\NormalTok{)}
+\NormalTok{data_to=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, tobacco_}\DecValTok{1}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{65}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Social Phobia}\label{social-phobia}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{social_ph<-}\StringTok{ }\KeywordTok{select}\NormalTok{(social_ph, CPES)}
+\NormalTok{social_ph=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(social_ph)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_sph =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(social_ph)}
+\NormalTok{data_sph=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, social_ph}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{87}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Personality}\label{personality}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{persona<-}\StringTok{ }\KeywordTok{select}\NormalTok{(persona, CPES)}
+\NormalTok{persona=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(persona)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_per =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(persona)}
+\NormalTok{data_per=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_per}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{44}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Marriage}\label{marriage}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{marriage<-}\StringTok{ }\KeywordTok{select}\NormalTok{(marriage, CPES)}
+\NormalTok{marriage=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(marriage)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_mar =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(marriage)}
+\NormalTok{data_mar=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_mar}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{29}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Social Networks}\label{social-networks}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{socnet<-}\StringTok{ }\KeywordTok{select}\NormalTok{(socnet, CPES)}
+\NormalTok{socnet=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(socnet)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_sn =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(socnet)}
+\NormalTok{data_sn=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_sn}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{15}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Nervous Attack}\label{nervous-attack}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{ner_at<-}\StringTok{ }\KeywordTok{select}\NormalTok{(ner_at, CPES)}
+\NormalTok{ner_at=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(ner_at)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_nerv =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(ner_at)}
+\NormalTok{data_nerv=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_nerv}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{23}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Discrimination}\label{discrimination}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{discrim<-}\StringTok{ }\KeywordTok{select}\NormalTok{(discrim, CPES)}
+\NormalTok{discrim=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(discrim)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_disc =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(discrim)}
+\NormalTok{data_disc=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_disc}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{13}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Demographics}\label{demographics}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{demograph<-}\StringTok{ }\KeywordTok{select}\NormalTok{(demograph, CPES)}
+\NormalTok{demograph=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(demograph)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_dem=}\StringTok{ }\KeywordTok{as.list}\NormalTok{(demograph)}
+\NormalTok{data_dem=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_dem}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{14}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Family Cohesion}\label{family-cohesion}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{family<-}\StringTok{ }\KeywordTok{select}\NormalTok{(family, CPES)}
+\NormalTok{family=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(family)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_fam =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(family)}
+\NormalTok{data_fam=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_fam}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{15}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Family and Friends}\label{family-and-friends}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{family_n_friends<-}\StringTok{ }\KeywordTok{select}\NormalTok{(family_n_friends, CPES)}
+\NormalTok{family_n_friends=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(family_n_friends)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_ff =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(family_n_friends)}
+\NormalTok{data_ff=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_ff}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{39}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Depression Espoide}\label{depression-espoide}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{depress<-}\StringTok{ }\KeywordTok{select}\NormalTok{(depress, CPES)}
+\NormalTok{depress=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(depress)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_dep =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(depress)}
+\NormalTok{data_dep=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_dep}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Alcohol}\label{alcohol}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{alcohol<-}\StringTok{ }\KeywordTok{select}\NormalTok{(alcohol, CPES)}
+\NormalTok{alcohol=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(alcohol)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_alco =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(alcohol)}
+\NormalTok{data_alco=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_alco}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Suicide}\label{suicide}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Main}
+\NormalTok{suicide<-}\StringTok{ }\KeywordTok{select}\NormalTok{(suicide, CPES)}
+\NormalTok{suicide=}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(suicide)}
+\CommentTok{#Make it a list}
+\NormalTok{namelist_sui =}\StringTok{ }\KeywordTok{as.list}\NormalTok{(suicide)}
+\NormalTok{data_sui=}\StringTok{ }\KeywordTok{select}\NormalTok{(raw_data, namelist_sui}\OperatorTok{$}\NormalTok{CPES[}\DecValTok{1}\OperatorTok{:}\DecValTok{12}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Tree and Logistic Models}\label{tree-and-logistic-models}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#tree model using alcohol as a predictor}
+\NormalTok{alco =}\StringTok{ }\KeywordTok{cbind}\NormalTok{(data_dep, data_alco)}
+\NormalTok{alco}
+\NormalTok{alco =}\StringTok{ }\NormalTok{alco}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Depressed =} \KeywordTok{as.factor}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(V07876 }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)))}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{train =}\StringTok{ }\NormalTok{alco }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_n}\NormalTok{(}\DecValTok{10000}\NormalTok{)}
+\NormalTok{test =}\StringTok{ }\NormalTok{alco }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{setdiff}\NormalTok{(train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Column `V07657` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V07655` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V07876` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V08766` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V08768` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V08312` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V08311` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V08515` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V07342` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Column `V07345` has different attributes on LHS and RHS of join
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tree_alco=}\KeywordTok{tree}\NormalTok{(Depressed}\OperatorTok{~}\NormalTok{., train)}
+\NormalTok{tree_alco}
+\KeywordTok{summary}\NormalTok{(tree_alco)}
+\NormalTok{tree_alco}
+\CommentTok{#plot(tree_alco)}
+\CommentTok{#text(tree_alco)}
+
+\CommentTok{#logistic regression}
+\NormalTok{glm_fit =}\StringTok{ }\KeywordTok{glm}\NormalTok{(Depressed}\OperatorTok{~}\NormalTok{. }\OperatorTok{-}\StringTok{ }\NormalTok{V07876,}
+\DataTypeTok{data =}\NormalTok{ train,}
+\DataTypeTok{family =}\NormalTok{ binomial)}
+\KeywordTok{summary}\NormalTok{(glm_fit)}
+\KeywordTok{coefficients}\NormalTok{(glm_fit)}
+
+\CommentTok{#a combination of depression, alcohol use, suicidality, and nervousness}
+\CommentTok{#V01993: Seriously thought about committing suicide}
+\CommentTok{#V02044: Ever attempted suicide}
+\CommentTok{#V08312: ICD Alcohol Dependence (30 day)}
+\NormalTok{combo1 <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(data_dep, data_alco, data_sui, data_nerv)}
+\NormalTok{combo1 <-}\StringTok{ }\NormalTok{combo1}\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Depressed =} \KeywordTok{as.factor}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(V07876 }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)))}
+
+
+\CommentTok{#LOGISTIC REGRESSION}
+\NormalTok{glm_fit =}\StringTok{ }\KeywordTok{glm}\NormalTok{(Depressed}\OperatorTok{~}\StringTok{ }\NormalTok{V01993 }\OperatorTok{+}\StringTok{ }\NormalTok{V02044 }\OperatorTok{+}\StringTok{ }\NormalTok{V08312,}
+  \DataTypeTok{data =}\NormalTok{ combo1,}
+  \DataTypeTok{family =}\NormalTok{ binomial)}
+\KeywordTok{summary}\NormalTok{(glm_fit)}
+\KeywordTok{coefficients}\NormalTok{(glm_fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{KNN using suicide, alcohol abuse, and
+personality}\label{knn-using-suicide-alcohol-abuse-and-personality}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{combo2 <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(data_alco, data_per, data_sui, data_dep)}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(V07876, V03234,V01993, V02044, V08312, V03256)}
+\NormalTok{combo2 =}\StringTok{  }\KeywordTok{na.omit}\NormalTok{(combo2)}
+
+
+\CommentTok{#V03234: Often feel empty inside}
+\CommentTok{#V01993: Seriously thought about committing suicide}
+\CommentTok{#V02044: Ever attempted suicide}
+\CommentTok{#V08312: ICD Alcohol Dependence (30 day)}
+\CommentTok{#V03256: Feel uncomfortabe/helpless when alone}
+
+
+\NormalTok{train_obvs =}\StringTok{ }\NormalTok{combo2 }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{slice}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{800}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(V03234,V01993, V02044, V08312, V03256)}
+
+
+\NormalTok{test_obvs =}\StringTok{ }\NormalTok{combo2 }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{slice}\NormalTok{(}\DecValTok{801}\OperatorTok{:}\KeywordTok{n}\NormalTok{())}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(V03234,V01993, V02044, V08312, V03256)}
+
+
+\NormalTok{train_Depression =}\StringTok{  }\NormalTok{combo2}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{slice}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{800}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(V07876) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{.}\OperatorTok{$}\NormalTok{V07876}
+
+\NormalTok{test_Depression =}\StringTok{  }\NormalTok{combo2}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{slice}\NormalTok{(}\DecValTok{801}\OperatorTok{:}\KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(V07876) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{.}\OperatorTok{$}\NormalTok{V07876}
+
+
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{knn_pred =}\StringTok{ }\KeywordTok{knn}\NormalTok{(train_obvs,}
+\NormalTok{  test_obvs,}
+\NormalTok{  train_Depression,}
+  \DataTypeTok{k =} \DecValTok{5}\NormalTok{)}
+
+\NormalTok{combo2}
+
+\KeywordTok{summary}\NormalTok{(knn_pred)}
+\KeywordTok{table}\NormalTok{(knn_pred, test_Depression)}
+\KeywordTok{mean}\NormalTok{(knn_pred }\OperatorTok{==}\StringTok{ }\NormalTok{test_Depression)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{DATA IMAGES}\label{data-images}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample1=}\StringTok{ }\NormalTok{data_alco}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_n}\NormalTok{(}\DecValTok{1000}\NormalTok{)}
+\NormalTok{a <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(sample1, }\KeywordTok{aes}\NormalTok{(V08312))}\OperatorTok{+}\KeywordTok{geom_histogram}\NormalTok{()}
+\NormalTok{a}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type labelled. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 62 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{Main_Code_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Plot "a" demonstrates the data within the V08312 variable (that represents "ICD Alcohol Dependence (30 day)"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(sample1, }\KeywordTok{aes}\NormalTok{(V08515))}\OperatorTok{+}\KeywordTok{geom_histogram}\NormalTok{()}
+\NormalTok{b}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type labelled. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 62 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{Main_Code_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Plot "b" demonstrates the data within the V08515 variable (that represents "ICD Alcohol Dependence (Lifetime)"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample2=}\StringTok{ }\NormalTok{data_su}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_n}\NormalTok{(}\DecValTok{1000}\NormalTok{)}
+\NormalTok{c <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(sample2, }\KeywordTok{aes}\NormalTok{(V03336))}\OperatorTok{+}\KeywordTok{geom_histogram}\NormalTok{()}
+\NormalTok{c}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type labelled. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 815 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{Main_Code_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Plot "c" demonstrates the data within the V03336 variable (that represents "Used marijuana/hash before teens"), which contains categorical data, 5 is for the people respoded with a "no" and the 1 is for the people that responded with a "yes"}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{d <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(sample2, }\KeywordTok{aes}\NormalTok{(V03290)) }\OperatorTok{+}\KeywordTok{geom_histogram}\NormalTok{()}
+\NormalTok{d}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 924 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{Main_Code_files/figure-latex/unnamed-chunk-24-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Plot "d" demonstrates the data within the V03290 variable (that represents "Age 1st drinking problem occured"), which contains numerical data, the x-axis is meant to show the age range for the question.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sample3 =}\StringTok{ }\NormalTok{data_sph }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_n}\NormalTok{(}\DecValTok{1000}\NormalTok{)}
+\NormalTok{e <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(sample3, }\KeywordTok{aes}\NormalTok{(V01533))}\OperatorTok{+}\KeywordTok{geom_histogram}\NormalTok{()  }\CommentTok{#social fear situation - fear vomiting}
+\NormalTok{e}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type labelled. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 948 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{Main_Code_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{f <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(sample3, }\KeywordTok{aes}\NormalTok{(V01511)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_histogram}\NormalTok{() }\CommentTok{#Shy/afraid/uncomf entering room when others are present}
+\NormalTok{f}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type labelled. Defaulting to continuous.
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 774 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\includegraphics{Main_Code_files/figure-latex/unnamed-chunk-26-1.pdf}
+
+By looking at several sample variables in our data through histogram
+visualization, we have learned that in our data we have numerical
+variables, but there are bunch of categorical variables, (Yes or No). In
+our visualization of categorical variable, 1 indicates ``Yes'' and 5
+indicates ``No''" in x-axis, and we have different ranges of scales for
+y-axis. In our numerical variables, we have different scales in x and
+y-axis.
+
+\section{Numeric summaries}\label{numeric-summaries}
+
+\subsection{Eating disorder}\label{eating-disorder}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(data_ed[}\DecValTok{1}\OperatorTok{:}\DecValTok{25}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+In this numeric summary of the first 25 variables in eating disorder the
+first thing to note is the immense amount of NA's or missing data. In
+another class we were discussing the issues of the different types of
+missing data, missing completely at random, missing at random, and
+missing not at random. I am curious if there is a way to tell what kind
+of missing data we have isn't none of us are experts in the field. It
+also brings up the question of what is the most appropriate way to deal
+with these missing vaules? It is also likely that we will remove
+Varibles with a high proportion of missing vaules\\
+Another take away from the summaries is from the means. For the
+variables that are only between 1 and 5 these are the yes or no
+questions on the survey, 1 being yes and 5 being no, the mean can tell
+us the proption of yes or nos in the varibles by seeing if the mean is
+closer to 1 or 5.
+
+\subsection{Alcohol}\label{alcohol-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(data_alco[}\DecValTok{1}\OperatorTok{:}\DecValTok{5}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+Three of the five varibles appear to be Yes or No survey questions with
+the majority of the responses being nos, and we can tell this because
+the means are extremely close to 5. This could be a concern as it means
+that there is little variation in the responses and so the varibles may
+not provide that much information. The other two varibles have a great
+deal of missing data, and so may lack any significant information.
+
+\subsection{Suicide}\label{suicide-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Seriously thought about committing suicide}
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{subset}\NormalTok{(data_sui, }\DataTypeTok{select=}\NormalTok{V01993))}
+\CommentTok{#Age 1st thought seriously about committing suicide}
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{subset}\NormalTok{(data_sui, }\DataTypeTok{select=}\NormalTok{V01994))}
+\CommentTok{#Seriously thought about committing suicide in past 12 months}
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{subset}\NormalTok{(data_sui, }\DataTypeTok{select=}\NormalTok{V01995))}
+\CommentTok{# Age last seriously thought about suicide}
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{subset}\NormalTok{(data_sui, }\DataTypeTok{select=}\NormalTok{V01996))}
+\CommentTok{#Age 1st made suicide plan}
+\KeywordTok{summary}\NormalTok{(}\KeywordTok{subset}\NormalTok{(data_sui, }\DataTypeTok{select=}\NormalTok{V01998))}
+\end{Highlighting}
+\end{Shaded}
+
+From the numerical summaries of these variables from the Suicide subset
+of the data we can see that there are some categorical variables, but
+most are numerical that depend on a larger range of numbers, and in this
+case the numbers represent the ages of the people involved in the
+studies. With our data we learn that most people said
+â\euro{}œnoâ\euro{} to seriously committing suicide both in the last 12
+months and at all. But from the other variables we can see that the
+people that have thought about committing suicide had these thoughts in
+their 20s. There are many NA values, so the summaries donâ\euro{}™t
+represent all of the observations from the data.
+
+\subsection{Social Phobia}\label{social-phobia-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{summary}\NormalTok{(data_sph[}\DecValTok{1}\OperatorTok{:}\DecValTok{25}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+In the numerical summaries in social phobia variable, there are only
+four numerical variables in the first 25 variables. We can figure out
+that this dataset has lots of categorical variables in here too. Also
+there are lots of NAâ\euro{}™s values. The mean of each categorical
+variable indicates the proportion of Yes or No in the variable. If the
+mean value is close to 1, the variables are dominated by the answer Yes.
+If the mean value is far from 1, the variables are dominated by NO.
+
+
+\end{document}
