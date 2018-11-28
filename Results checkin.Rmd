@@ -218,6 +218,7 @@ alcohol= drop_na(alcohol)
 #Make it a list
 namelist_alco = as.list(alcohol)
 data_alco= select(raw_data, namelist_alco$CPES[1:5])
+
 ```
 
 
@@ -287,90 +288,3 @@ data_ed$V04763<- as.factor(data_ed$V04763)
 
 summary(data_ed[50:64])
 ```
-
-## Social Phobia factor conversion [1:87]
-```{r, results='hide'}
-data_sph$V01504<- as.factor(data_sph$V01504)
-data_sph$V01505<- as.factor(data_sph$V01505)
-data_sph$V01506<- as.factor(data_sph$V01506)
-data_sph$V01507<- as.factor(data_sph$V01507)
-data_sph$V01508<- as.factor(data_sph$V01508)
-data_sph$V01509<- as.factor(data_sph$V01509)
-data_sph$V01510<- as.factor(data_sph$V01510)
-data_sph$V01511<- as.factor(data_sph$V01511)
-data_sph$V01512<- as.factor(data_sph$V01512)
-data_sph$V01513<- as.factor(data_sph$V01513)
-data_sph$V01514<- as.factor(data_sph$V01514)
-data_sph$V01515<- as.factor(data_sph$V01515)
-data_sph$V01516<- as.factor(data_sph$V01516)
-data_sph$V01517<- as.factor(data_sph$V01517)
-data_sph$V01529<- as.factor(data_sph$V01529)
-data_sph$V01530<- as.factor(data_sph$V01530)
-data_sph$V01531<- as.factor(data_sph$V01531)
-data_sph$V01532<- as.factor(data_sph$V01532)
-data_sph$V01533<- as.factor(data_sph$V01533)
-data_sph$V01534<- as.factor(data_sph$V01534)
-data_sph$V01535<- as.factor(data_sph$V01535)
-data_sph$V01536<- as.factor(data_sph$V01536)
-data_sph$V01537<- as.factor(data_sph$V01537)
-data_sph$V01538<- as.factor(data_sph$V01538)
-data_sph$V01539<- as.factor(data_sph$V01539)
-data_sph$V01540<- as.factor(data_sph$V01540)
-data_sph$V01541<- as.factor(data_sph$V01541)
-data_sph$V01542<- as.factor(data_sph$V01542)
-data_sph$V01543<- as.factor(data_sph$V01543)
-data_sph$V01544<- as.factor(data_sph$V01544)
-data_sph$V01545<- as.factor(data_sph$V01545)
-data_sph$V01546<- as.factor(data_sph$V01546)
-data_sph$V01547<- as.factor(data_sph$V01547)
-data_sph$V01548<- as.factor(data_sph$V01548)
-data_sph$V01549<- as.factor(data_sph$V01549)
-data_sph$V01551<- as.factor(data_sph$V01551)
-data_sph$V01552<- as.factor(data_sph$V01552)
-data_sph$V01553<- as.factor(data_sph$V01553)
-data_sph$V01554<- as.factor(data_sph$V01554)
-data_sph$V01555 <- as.factor(data_sph$V01555)
-data_sph$V01556 <- as.factor(data_sph$V01556)
-data_sph$V01557 <- as.factor(data_sph$V01557)
-data_sph$V01558 <- as.factor(data_sph$V01558)
-data_sph$V01561 <- as.factor(data_sph$V01561)
-data_sph$V01571 <- as.factor(data_sph$V01571)
-data_sph$V01583 <- as.factor(data_sph$V01583)
-data_sph$V01584 <- as.factor(data_sph$V01584)
-data_sph$V01597 <- as.factor(data_sph$V01597)
-data_sph$V01598 <- as.factor(data_sph$V01598)
-data_sph$V01601 <- as.factor(data_sph$V01601)
-data_sph$V01602 <- as.factor(data_sph$V01602)
-data_sph$V01603 <- as.factor(data_sph$V01603)
-data_sph$V01604 <- as.factor(data_sph$V01604)
-data_sph$V01605 <- as.factor(data_sph$V01605)
-data_sph$V01606 <- as.factor(data_sph$V01606)
-data_sph$V01607 <- as.factor(data_sph$V01607)
-data_sph$V01608 <- as.factor(data_sph$V01608)
-data_sph$V01609 <- as.factor(data_sph$V01609)
-data_sph$V01614 <- as.factor(data_sph$V01614)
-data_sph$V01615 <- as.factor(data_sph$V01615)
-data_sph$V01616 <- as.factor(data_sph$V01616)
-data_sph$V01617 <- as.factor(data_sph$V01617)
-data_sph$V01621 <- as.factor(data_sph$V01615)
-data_sph$V01615 <- as.factor(data_sph$V01615)
-data_sph$V01616 <- as.factor(data_sph$V01616)
-data_sph$V01617 <- as.factor(data_sph$V01617)
-data_sph$V01621 <- as.factor(data_sph$V01621)
-data_sph$V01622 <- as.factor(data_sph$V01622)
-
-summary(data_sph)
-```
-
-## Alcohol
-```{r, results='hide'}
-data_alco$V08312 <-as.factor(data_alco$V08312)
-data_alco$V08311 <-as.factor(data_alco$V08311)
-data_alco$V08315 <-as.factor(data_alco$V08315)
-
-summary(data_alco)
-```
-
-
-
-
