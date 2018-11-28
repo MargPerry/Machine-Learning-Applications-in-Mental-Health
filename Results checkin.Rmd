@@ -43,7 +43,9 @@ suicide<- read_csv("Variblenamefiles/Suicide.csv")
 "Uncomment when uploading raw data however the raw dataset is too large for Git"
 
 num_to_bin <- function(column) {
-  column <-as.factor(ifelse(column == 1, 1, 0))
+  
+  column <-as.factor(column)
+  
   column
 }
 
