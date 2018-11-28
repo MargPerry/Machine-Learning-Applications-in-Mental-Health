@@ -223,7 +223,7 @@ data_sui= select(raw_data, namelist_sui$CPES[1:12])
 
 
 num_to_bin <- function(column) {
-  column <-as.factor(column)
+  column <-as.factor(ifelse(column == 1, 1, 0))
   column
 }
 
