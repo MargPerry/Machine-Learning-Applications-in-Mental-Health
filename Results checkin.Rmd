@@ -148,6 +148,8 @@ socnet= drop_na(socnet)
 #Make it a list
 namelist_sn = as.list(socnet)
 data_sn= select(raw_data, namelist_sn$CPES[1:15])
+data_sn <- apply(data_sn, 2, FUN = num_to_bin)
+summary(data_sn)
 ```
 
 #Nervous Attack
@@ -158,6 +160,9 @@ ner_at= drop_na(ner_at)
 #Make it a list
 namelist_nerv = as.list(ner_at)
 data_nerv= select(raw_data, namelist_nerv$CPES[1:23])
+data_nerv <- apply(data_nerv, 2, FUN = num_to_bin)
+summary(data_nerv)
+
 ```
 
 #Discrimination
@@ -169,6 +174,9 @@ discrim= drop_na(discrim)
 #Make it a list
 namelist_disc = as.list(discrim)
 data_disc= select(raw_data, namelist_disc$CPES[1:13])
+data_disc <- apply(data_disc, 2, FUN = num_to_bin)
+summary(data_disc)
+
 ```
 
 #Demographics
@@ -179,6 +187,8 @@ demograph= drop_na(demograph)
 #Make it a list
 namelist_dem= as.list(demograph)
 data_dem= select(raw_data, namelist_dem$CPES[1:14])
+data_dem <- apply(data_dem, 2, FUN = num_to_bin)
+summary(data_dem)
 ```
 
 #Family Cohesion
@@ -190,6 +200,8 @@ family= drop_na(family)
 #Make it a list
 namelist_fam = as.list(family)
 data_fam= select(raw_data, namelist_fam$CPES[1:15])
+data_fam <- apply(data_fam, 2, FUN = num_to_bin)
+summary(data_fam)
 ```
 #Family and Friends
 ```{r, results='hide'}
@@ -199,6 +211,9 @@ family_n_friends= drop_na(family_n_friends)
 #Make it a list
 namelist_ff = as.list(family_n_friends)
 data_ff= select(raw_data, namelist_ff$CPES[1:39])
+
+data_ff <- apply(data_ff, 2, FUN = num_to_bin)
+summary(data_ff)
 ```
 #Depression Espoide
 ```{r, results='hide'}
@@ -208,6 +223,8 @@ depress= drop_na(depress)
 #Make it a list
 namelist_dep = as.list(depress)
 data_dep= select(raw_data, namelist_dep$CPES[1:5])
+data_dep <- apply(data_dep, 2, FUN = num_to_bin)
+summary(data_dep)
 ```
 
 #Alcohol
@@ -218,7 +235,8 @@ alcohol= drop_na(alcohol)
 #Make it a list
 namelist_alco = as.list(alcohol)
 data_alco= select(raw_data, namelist_alco$CPES[1:5])
-
+data_alco <- apply(data_alco, 2, FUN = num_to_bin)
+summary(data_alco)
 ```
 
 
