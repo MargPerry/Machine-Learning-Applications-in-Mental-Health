@@ -15,6 +15,7 @@ library(tree)
 library(ISLR)
 library(ggplot2)
 library(class)
+library(logisticPCA)
 
 ```
 
@@ -418,12 +419,16 @@ combo1 <- na.omit(combo1)
 #V02044: Ever attempted suicide
 #V08312: ICD Alcohol Dependence (30 day)
 #V03256: Feel uncomfortabe/helpless when alone
+#V04657: Ever strong fear/concern about being too overweight
+#V03238: When under stress, things around don't seem real
+
+combo3 <- cbind(data_alco, data_per, data_sui, data_dep, data_ed2)%>%
+  select(V07876, V03234,V01993, V02044, V08312, V03256, V04657) 
+combo3 <- na.omit(combo3)
 
 combo2 <- cbind(data_alco, data_per, data_sui, data_dep)%>%
-  mutate(Depressed = V07876)%>%
-  select(V07876, V03234,V01993, V02044, V08312, V03256) 
+  select(V07876, V03234,V01993, V02044, V08312)
 combo2 =  na.omit(combo2)
-
 
 #LOGISTIC REGRESSION
 glm_fit = glm(V07876~ .,
@@ -431,6 +436,16 @@ glm_fit = glm(V07876~ .,
   family = binomial)
 summary(glm_fit)
 coefficients(glm_fit)
+
+#LOGISTIC ATTEMPT 2
+glm2_fit = glm(V07876~ .,
+  data = combo3,
+  family = binomial)
+summary(glm2_fit)
+coefficients(glm_fit)
+
+
+
 
 ```
 
