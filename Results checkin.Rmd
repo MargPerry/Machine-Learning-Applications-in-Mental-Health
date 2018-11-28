@@ -218,6 +218,7 @@ alcohol= drop_na(alcohol)
 #Make it a list
 namelist_alco = as.list(alcohol)
 data_alco= select(raw_data, namelist_alco$CPES[1:5])
+
 ```
 
 
