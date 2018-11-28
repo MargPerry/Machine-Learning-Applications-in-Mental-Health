@@ -47,8 +47,7 @@ num_to_bin <- function(column) {
   column
 }
 
-data_sui <- apply(data_sui, 2, FUN = num_to_bin)
-summary(data_sui)
+
 ```
 
 ```{r, results='hide'}
@@ -229,8 +228,8 @@ suicide= drop_na(suicide)
 namelist_sui = as.list(suicide)
 data_sui= select(raw_data, namelist_sui$CPES[1:12])
 
-
-
+data_sui <- apply(data_sui, 2, FUN = num_to_bin)
+summary(data_sui)
 
 ```
 #Fixing the Varibles
