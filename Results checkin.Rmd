@@ -137,6 +137,9 @@ marriage= drop_na(marriage)
 #Make it a list
 namelist_mar = as.list(marriage)
 data_mar= select(raw_data, namelist_mar$CPES[1:29])
+
+data_mar <- apply(data_mar, 2, FUN = num_to_bin)
+summary(data_mar)
 ```
 
 #Social Networks
