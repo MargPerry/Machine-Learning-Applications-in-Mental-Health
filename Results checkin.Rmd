@@ -399,8 +399,38 @@ data_sph<- apply(data_sph, 2, FUN = num_to_bin)
 
 ## Alcohol
 ```{r, results='hide'}
-data_alco$V08312 <-as.factor(ifelse(data_alco$V08312== 1,1,0))
-data_alco$V08311 <-as.factor(ifelse(data_alco$V08311== 1,1,0))
-data_alco$V08515 <-as.factor(ifelse(data_alco$V08515== 1,1,0))
+# data_alco$V08312 <-as.factor(ifelse(data_alco$V08312== 1,1,0))
+# data_alco$V08311 <-as.factor(ifelse(data_alco$V08311== 1,1,0))
+# data_alco$V08515 <-as.factor(ifelse(data_alco$V08515== 1,1,0))
+```
+
+```{r}
+#a combination of depression, alcohol use, suicidality, and nervousness
+#V01993: Seriously thought about committing suicide
+#V02044: Ever attempted suicide
+#V08312: ICD Alcohol Dependence (30 day)
+combo1 <- cbind(data_dep, data_alco, data_sui, data_nerv)
+combo1 <- na.omit(combo1)
+
+
+#V03234: Often feel empty inside
+#V01993: Seriously thought about committing suicide
+#V02044: Ever attempted suicide
+#V08312: ICD Alcohol Dependence (30 day)
+#V03256: Feel uncomfortabe/helpless when alone
+
+combo2 <- cbind(data_alco, data_per, data_sui, data_dep)%>%
+  mutate(Depressed = V07876)%>%
+  select(V07876, V03234,V01993, V02044, V08312, V03256) 
+combo2 =  na.omit(combo2)
+
+
+#LOGISTIC REGRESSION
+glm_fit = glm(V07876~ .,
+  data = combo2,
+  family = binomial)
+summary(glm_fit)
+coefficients(glm_fit)
+
 ```
 
