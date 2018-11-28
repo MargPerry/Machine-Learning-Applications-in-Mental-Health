@@ -41,6 +41,15 @@ suicide<- read_csv("Variblenamefiles/Suicide.csv")
 
 
 "Uncomment when uploading raw data however the raw dataset is too large for Git"
+
+num_to_bin <- function(column) {
+  
+  column <-as.factor(column)
+  
+  column
+}
+
+
 ```
 
 ```{r, results='hide'}
@@ -220,12 +229,6 @@ suicide= drop_na(suicide)
 #Make it a list
 namelist_sui = as.list(suicide)
 data_sui= select(raw_data, namelist_sui$CPES[1:12])
-
-
-num_to_bin <- function(column) {
-  column <-as.factor(ifelse(column == 1, 1, 0))
-  column
-}
 
 data_sui <- apply(data_sui, 2, FUN = num_to_bin)
 summary(data_sui)
