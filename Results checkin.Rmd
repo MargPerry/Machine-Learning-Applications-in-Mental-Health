@@ -272,5 +272,12 @@ data_ed$V04762<- as.factor(data_ed$V04762)
 data_ed$V04763<- as.factor(data_ed$V04763)
 
 
-summary(data_ed[50:64])
+summary(data_ed[1:64])
+```
+
+##Substance Use
+
+```{r}
+
+
 ```
