@@ -220,6 +220,16 @@ suicide= drop_na(suicide)
 #Make it a list
 namelist_sui = as.list(suicide)
 data_sui= select(raw_data, namelist_sui$CPES[1:12])
+
+
+num_to_bin <- function(column) {
+  column <-as.factor(column)
+  column
+}
+
+data_sui <- apply(data_sui, 2, FUN = num_to_bin)
+summary(data_sui)
+
 ```
 #Fixing the Varibles
 the binary varibles are in the code as numeric and so we must change these to categorical
