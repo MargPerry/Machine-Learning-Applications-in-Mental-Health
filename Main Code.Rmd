@@ -258,7 +258,7 @@ coefficients(glm_fit)
 combo1 <- cbind(data_dep, data_alco, data_sui, data_nerv)
 combo1 <- combo1%>%
     mutate(Depressed = as.factor(ifelse(V07876 == 1, 1, 0)))
-
+combo1 = na.omit(combo1)
 
 #LOGISTIC REGRESSION
 glm_fit = glm(Depressed~ V01993 + V02044 + V08312,
@@ -403,5 +403,9 @@ summary(data_sph[1:25])
 ```
 
 In the numerical summaries in social phobia variable, there are only four numerical variables in the first 25 variables. We can figure out that this dataset has lots of categorical variables in here too. Also there are lots of NA’s values. The mean of each categorical variable indicates the proportion of Yes or No in the variable. If the mean value is close to 1, the variables are dominated by the answer Yes. If the mean value is far from 1, the variables are dominated by NO. 
+
+```{r}
+
+```
 
 
