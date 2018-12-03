@@ -31,7 +31,7 @@ library(class)
 ```{r, results='hide'}
 library(readr)
 library(haven)
-raw_data <- read_sav("C:/Users/rocio/Downloads/20240-0001-Data.sav")
+#raw_data <- read_sav("C:/Users/rocio/Downloads/20240-0001-Data.sav")
 eatdisord_1 <- read_csv("Variblenamefiles/eatdisord_1.csv")
 sub_use_1 <- read_csv("Variblenamefiles/sub_use_1.csv")
 socnet<- read_csv("Variblenamefiles/socialnetworks.csv")
@@ -225,24 +225,40 @@ namelist_sui = as.list(suicide)
 data_sui= select(raw_data, namelist_sui$CPES[1:12])
 ```
 
-#Tree and Logistic Models
+#Tree Decisions
 ```{r, results='hide'}
+library(rpart)
 #tree model using alcohol as a predictor
-alco = cbind(data_dep, data_alco)
-alco
-alco = alco%>%
-  mutate(Depressed = as.factor(ifelse(V07876 == 1, 1, 0)))
+combo1 <- cbind(data_dep, data_alco, data_sui, data_nerv, data_per)
+combo1 <- combo1%>%
+    mutate(Depressed = as.factor(ifelse(V07655 == 1, 1, 0))) 
+
+combo1[is.na(combo1)] <- 0
+combo1[ combo1 == "1" ] <- 0
+combo1[ combo1 == "5" ] <- 1
+combo1 <- subset(combo1, select = -c(V08766, V08768, V07342,V01994, V01996, V02005, V02024,V02026, V06481, V07345, V01998))
+
 set.seed(1)
-train = alco %>%
+train = combo1 %>%
   sample_n(10000)
-test = alco %>%
+test = combo1 %>%
   setdiff(train)
-tree_alco=tree(Depressed~., train)
-tree_alco
-summary(tree_alco)
-tree_alco
-#plot(tree_alco)
-#text(tree_alco)
+
+ctrl <- rpart.control(minsplit = 2, minbucket = 1, cp = 0.00001)
+tree_combo <- rpart(Depressed ~ ., data = train, control = ctrl)
+
+tree_combo
+summary(tree_combo)
+tree_combo
+plot(tree_combo, compress = TRUE)
+text(tree_combo, cex = 0.7, use.n = TRUE, fancy = FALSE, all = TRUE)
+
+
+```
+
+#Logistic 
+
+```{r}
 
 #logistic regression
 glm_fit = glm(Depressed~. - V07876,
@@ -255,20 +271,24 @@ coefficients(glm_fit)
 #V01993: Seriously thought about committing suicide
 #V02044: Ever attempted suicide
 #V08312: ICD Alcohol Dependence (30 day)
-combo1 <- cbind(data_dep, data_alco, data_sui, data_nerv)
+combo1 <- cbind(data_dep, data_alco, data_sui, data_nerv, data_per)
 combo1 <- combo1%>%
+<<<<<<< HEAD
     mutate(Depressed = as.factor(ifelse(V07876 == 1, 1, 0)))
 combo1 = na.omit(combo1)
+=======
+    mutate(Depressed = as.factor(ifelse(V07655 == 1, 1, 0))) 
+>>>>>>> af7e85adeb4417ebad053d06ed452c905d6cb4d0
 
+combo1[is.na(combo1)] <- 0
+    
 #LOGISTIC REGRESSION
-glm_fit = glm(Depressed~ V01993 + V02044 + V08312,
-  data = combo1,
+glm_fit = glm(Depressed ~., data = combo1,
   family = binomial)
 summary(glm_fit)
 coefficients(glm_fit)
 
 ```
-
 
 #KNN using suicide, alcohol abuse, and personality
 ```{r, results='hide'}
