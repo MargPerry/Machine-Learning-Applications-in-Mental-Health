@@ -226,3 +226,102 @@ dat.20percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.20)]
 dat.30percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.30)]
 ```
 
+#Tree Decision for predicting depression with 30 day episode 
+```{r}
+dat.30percent[is.na(dat.30percent)] <- 0
+dat.30percent$V09414 = as.factor(dat.30percent$V09414)
+dat.30percent$V07657 = as.factor(dat.30percent$V07657)
+dat.30percent[ dat.30percent == "5" ] <- 1
+
+set.seed(1)
+train = dat.30percent%>%
+  sample_n(10000)
+test = dat.30percent%>%
+  setdiff(train)
+
+tree<- tree(V07657~.-V07655-V07876, data = train)
+summary(tree)
+plot(tree)
+text(tree, pretty = 0)
+```
+
+```{r}
+#excluding the variable if someone lives in the country or not 
+tree2<- tree(V07657 ~.-V07655-V07876-V05700, data = train)
+summary(tree)
+plot(tree2)
+text(tree2, pretty = 0)
+
+```
+
+```{r}
+tree2
+```
+
+```{r}
+tree_pred = predict(tree, test, type = "class")
+tree_pred
+table(tree_pred, test$V07657)
+#number of correct predictions is about 78%. 
+(763+3262)/(763+ 318 + 802+3262) = 0.7823129 
+
+```
+
+```{r}
+tree_pred = predict(tree2, test, type = "class")
+tree_pred
+table(tree_pred, test$V07657)
+#prediction correct rate 
+(512+3278)/(512 +302+1053+ 3278) =  0.7366375
+```
+
+#Tree Decision for predicting depression with 12month episode 
+```{r}
+set.seed(1)
+dat.30percent[is.na(dat.30percent)] <- 0
+dat.30percent$V09414 = as.factor(dat.30percent$V09414)
+dat.30percent$V07655 = as.factor(dat.30percent$V07655)
+dat.30percent[ dat.30percent == "5" ] <- 1
+train = dat.30percent%>%
+  sample_n(10000)
+test = dat.30percent%>%
+  setdiff(train)
+
+tree<- tree(V07655~.-V07657-V07876, data = train)
+summary(tree)
+plot(tree)
+text(tree, pretty = 0)
+```
+
+```{r}
+tree_pred = predict(tree, test, type = "class")
+table(tree_pred, test$V07655)
+```
+
+#Tree Decision for predicting depression with lifetime episode 
+```{r}
+set.seed(1)
+dat.30percent[is.na(dat.30percent)] <- 0
+dat.30percent$V09414 = as.factor(dat.30percent$V09414)
+dat.30percent$V07876 = as.factor(dat.30percent$V07876)
+dat.30percent[ dat.30percent == "5" ] <- 1
+train = dat.30percent%>%
+  sample_n(10000)
+test = dat.30percent%>%
+  setdiff(train)
+
+tree<- tree(V07876~.-V07657-V07655, data = train)
+summary(tree)
+plot(tree)
+text(tree, pretty = 0)
+```
+
+
+
+
+
+
+
+
+
+
