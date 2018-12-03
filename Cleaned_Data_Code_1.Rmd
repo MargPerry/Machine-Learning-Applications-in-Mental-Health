@@ -1,0 +1,380 @@
+---
+title: "New Dataset"
+author: "Hanxiao Lu"
+date: "11/30/2018"
+output: html_document
+---
+
+```{r, results='hide'}
+library(haven)
+library(tidyr)
+library(dplyr)
+library(mosaic)
+library(tree)
+library(ISLR)
+library(ggplot2)
+library(class)
+```
+
+##Names (eating disorder)
+```{r, results='hide'}
+library(readr)
+library(haven)
+#raw_data <- read_sav("C:/Users/rocio/Downloads/20240-0001-Data.sav")
+eatdisord_1 <- read_csv("Variblenamefiles/eatdisord_1.csv")
+sub_use_1 <- read_csv("Variblenamefiles/sub_use_1.csv")
+socnet<- read_csv("Variblenamefiles/socialnetworks.csv")
+tobacco_1<- read_csv("Variblenamefiles/Tobacco_1.csv")
+alcohol<- read_csv("Variblenamefiles/alcohol.csv")
+social_ph<- read_csv("Variblenamefiles/Soicalph_1.csv")
+persona<- read_csv("Variblenamefiles/personality_1.csv")
+marriage<- read_csv("Variblenamefiles/marriage.csv")
+ner_at<- read_csv("Variblenamefiles/nervous_attack.csv")
+discrim<- read_csv("Variblenamefiles/discrimination.csv")
+demograph<- read_csv("Variblenamefiles/demographics.csv")
+family<- read_csv("Variblenamefiles/family.csv")
+family_n_friends<- read_csv("Variblenamefiles/family_n_friends.csv")
+depress<- read_csv("Variblenamefiles/depression.csv")
+suicide<- read_csv("Variblenamefiles/Suicide.csv")
+
+"Uncomment when uploading raw data however the raw dataset is too large for Git"
+```
+
+```{r, results='hide'}
+#Read in Var names
+
+#Main
+eatdisord_1<- select(eatdisord_1, CPES, Eating_Disorder)
+eatdisord_1= drop_na(eatdisord_1)
+View(eatdisord_1)
+
+#CPES
+CPES_ed= select(eatdisord_1, CPES)
+View(CPES_ed)
+
+#Full_explaination
+full_name= select(eatdisord_1, Eating_Disorder)
+View(full_name)
+
+#Make it a list
+namelist = as.list(full_name)
+'print(namelist)'
+' We did not need this and can join on just the CPES code and maintain the information of the varible'
+```
+
+##Making Subset(eating disorder)
+
+```{r, results='hide'}
+data_ed= select(raw_data, CPES_ed$CPES[1:64])
+```
+
+#Substance varibles 
+```{r, results='hide'}
+#Main
+sub_use_1<- select(sub_use_1, CPES)
+sub_use_1= drop_na(sub_use_1)
+#View(sub_use_1)
+
+#Make it a list
+namelist_su = as.list(sub_use_1)
+data_su= select(raw_data, sub_use_1$CPES[1:70])
+```
+
+#Tobacco
+```{r, results='hide'}
+#Main
+tobacco_1<- select(tobacco_1, CPES)
+tobacco_1= drop_na(tobacco_1)
+#Make it a list
+namelist_to = as.list(tobacco_1)
+data_to= select(raw_data, tobacco_1$CPES[1:65])
+```
+
+#Social Phobia
+```{r, results='hide'}
+#Main
+social_ph<- select(social_ph, CPES)
+social_ph= drop_na(social_ph)
+#Make it a list
+namelist_sph = as.list(social_ph)
+data_sph= select(raw_data, social_ph$CPES[1:87])
+```
+
+#Personality
+```{r, results='hide'}
+#Main
+persona<- select(persona, CPES)
+persona= drop_na(persona)
+#Make it a list
+namelist_per = as.list(persona)
+data_per= select(raw_data, namelist_per$CPES[1:44])
+```
+
+#Marriage
+```{r, results='hide'}
+#Main
+marriage<- select(marriage, CPES)
+marriage= drop_na(marriage)
+#Make it a list
+namelist_mar = as.list(marriage)
+data_mar= select(raw_data, namelist_mar$CPES[1:29])
+```
+
+#Social Networks
+
+```{r, results='hide'}
+#Main
+socnet<- select(socnet, CPES)
+socnet= drop_na(socnet)
+#Make it a list
+namelist_sn = as.list(socnet)
+data_sn= select(raw_data, namelist_sn$CPES[1:15])
+```
+
+#Nervous Attack
+```{r, results='hide'}
+#Main
+ner_at<- select(ner_at, CPES)
+ner_at= drop_na(ner_at)
+#Make it a list
+namelist_nerv = as.list(ner_at)
+data_nerv= select(raw_data, namelist_nerv$CPES[1:23])
+```
+
+#Discrimination
+
+```{r, results='hide'}
+#Main
+discrim<- select(discrim, CPES)
+discrim= drop_na(discrim)
+#Make it a list
+namelist_disc = as.list(discrim)
+data_disc= select(raw_data, namelist_disc$CPES[1:13])
+```
+
+#Demographics
+```{r, results='hide'}
+#Main
+demograph<- select(demograph, CPES)
+demograph= drop_na(demograph)
+#Make it a list
+namelist_dem= as.list(demograph)
+data_dem= select(raw_data, namelist_dem$CPES[1:14])
+```
+
+#Family Cohesion
+
+```{r, results='hide'}
+#Main
+family<- select(family, CPES)
+family= drop_na(family)
+#Make it a list
+namelist_fam = as.list(family)
+data_fam= select(raw_data, namelist_fam$CPES[1:15])
+```
+#Family and Friends
+```{r, results='hide'}
+#Main
+family_n_friends<- select(family_n_friends, CPES)
+family_n_friends= drop_na(family_n_friends)
+#Make it a list
+namelist_ff = as.list(family_n_friends)
+data_ff= select(raw_data, namelist_ff$CPES[1:39])
+```
+#Depression Espoide
+```{r, results='hide'}
+#Main
+depress<- select(depress, CPES)
+depress= drop_na(depress)
+#Make it a list
+namelist_dep = as.list(depress)
+data_dep= select(raw_data, namelist_dep$CPES[1:5])
+```
+
+#Alcohol
+```{r, results='hide'}
+#Main
+alcohol<- select(alcohol, CPES)
+alcohol= drop_na(alcohol)
+#Make it a list
+namelist_alco = as.list(alcohol)
+data_alco= select(raw_data, namelist_alco$CPES[1:5])
+```
+
+
+#Suicide
+```{r, results='hide'}
+#Main
+suicide<- select(suicide, CPES)
+suicide= drop_na(suicide)
+#Make it a list
+namelist_sui = as.list(suicide)
+data_sui= select(raw_data, namelist_sui$CPES[1:12])
+```
+
+#combine all datasets into one 
+```{r}
+newdata <- cbind(data_alco, data_dem, data_dep, data_disc, data_ed, data_fam, data_ff, data_mar, data_nerv, data_per, data_sn, data_sph, data_su, data_sui, data_to)
+```
+
+#calculate the missing values from each variable (there are 500 of them!) and drop the ones with more than ... percent of missing values. play with it and apply methods for new results! 
+```{r}
+dat.5percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.05)]
+dat.10percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.10)]
+dat.20percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.20)]
+dat.30 <- newdata[, -which(colMeans(is.na(newdata)) > 0.30)]
+```
+
+```{r}
+dat.30[ dat.30 == "1" ] <- 1
+dat.30[ dat.30 == "5" ] <- 0
+dat.30[is.na(dat.30)] <- 0
+dat.30$V07657 = as.factor(dat.30$V07657)
+dat.30$V07655 = as.factor(dat.30$V07655)
+dat.30$V07876 = as.factor(dat.30$V07876)
+
+set.seed(7)
+train = dat.30%>%
+  sample_frac(.5)
+test = dat.30%>%
+  setdiff(train)
+
+tree<- tree(V07655~.-V07657 - V07876, data = train)
+summary(tree)
+plot(tree)
+text(tree, pretty = 0)
+```
+
+```{r}
+tree_pred = predict(tree, test, type = "class")
+table(tree_pred, test$V07655)
+```
+
+#Tree Decision for predicting depression with 12month episode 
+```{r}
+dat.30[is.na(dat.30)] <- 5
+dat.30$V07657 = as.factor(dat.30$V07657)
+dat.30$V08311 = as.factor(dat.30$V08311)
+dat.30$V08312 = as.factor(dat.30$V08312)
+dat.30$V07655 = as.factor(dat.30$V07655)
+dat.30$V05700 = as.factor(dat.30$V05700)
+dat.30$V07876 = as.factor(dat.30$V07876)
+dat.30$V03221 = as.factor(dat.30$V03221)
+dat.30$V03223 = as.factor(dat.30$V03223)
+dat.30$V03224 = as.factor(dat.30$V03224)
+dat.30$V03225 = as.factor(dat.30$V03225)
+dat.30$V03226 = as.factor(dat.30$V03226)
+dat.30$V03227 = as.factor(dat.30$V03227)
+dat.30$V03228 = as.factor(dat.30$V03228)
+dat.30$V03229 = as.factor(dat.30$V03229)
+dat.30$V03230 = as.factor(dat.30$V03230)
+dat.30$V03231 = as.factor(dat.30$V03231)
+dat.30$V03330 = as.factor(dat.30$V03330)
+dat.30$V03331 = as.factor(dat.30$V03331)
+dat.30$V03332 = as.factor(dat.30$V03332)
+dat.30$V03333 = as.factor(dat.30$V03333)
+dat.30$V01993 = as.factor(dat.30$V01993)
+
+
+set.seed(7)
+train = dat.30%>%
+  sample_frac(.5)
+test = dat.30%>%
+  setdiff(train)
+
+tree<- tree(V07657~.-V07655 - V07876, data = train)
+summary(tree)
+plot(tree)
+text(tree, pretty = 0)
+```
+
+
+
+
+```{r}
+#excluding the variable if someone lives in the country or not 
+tree2<- tree(V07657 ~.-V07655-V07876-V05700, data = train)
+summary(tree)
+plot(tree2)
+text(tree2, pretty = 0)
+
+```
+
+```{r}
+tree2
+```
+
+```{r}
+tree_pred = predict(tree, test, type = "class")
+table(tree_pred, test$V07657)
+#number of correct predictions is about 78%. 
+
+```
+
+```{r}
+tree_pred = predict(tree2, test, type = "class")
+table(tree_pred, test$V07657)
+#prediction correct rate 
+```
+
+#Tree Decision for predicting depression with 12month episode 
+```{r}
+set.seed(1)
+train = dat.30percent%>%
+  sample_n(10000)
+test = dat.30percent%>%
+  setdiff(train)
+
+tree3<- tree(V07655~.-V07657-V07876, data = train)
+plot(tree3)
+text(tree3, pretty = 0)
+```
+
+```{r}
+tree_pred = predict(tree3, test, type = "class")
+table(tree_pred, test$V07655)
+```
+
+#Tree Decision for predicting depression with lifetime episode 
+```{r}
+set.seed(1)
+train = dat.30percent%>%
+  sample_n(10000)
+test = dat.30percent%>%
+  setdiff(train)
+
+tree4<- tree(V07876~.-V07657-V07655, data = train)
+plot(tree4)
+text(tree4, pretty = 0)
+```
+
+```{r}
+tree_pred = predict(tree4, test, type = "class")
+table(tree_pred, test$V07876)
+```
+
+#with 10 percent missing values 
+```{r}
+dat.10percent[is.na(dat.10percent)] <- 5 
+#assume all missing values are not endorsed cases
+dat.10percent$V07655 = as.factor(dat.10percent$V07655)
+dat.10percent$V07876 = as.factor(dat.10percent$V07876)
+
+set.seed(3)
+train = dat.10percent%>%
+  sample_n(10000)
+test = dat.10percent%>%
+  setdiff(train)
+
+tree5<- tree(V07655~.-V07876, data = train)
+summary(tree5)
+plot(tree5)
+text(tree5, pretty = 0)
+```
+
+
+
+
+
+
+
