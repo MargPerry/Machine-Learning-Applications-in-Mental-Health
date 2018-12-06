@@ -282,7 +282,7 @@ train = dat.30%>%
 test = dat.30%>%
   setdiff(train)
 
-tree<- tree(V07657~.-V07655 - V07876, data = train)
+tree<- tree(V07655~.-V07657 - V07876, data = train)
 summary(tree)
 plot(tree)
 text(tree, pretty = 0)
@@ -297,7 +297,6 @@ tree2<- tree(V07657 ~.-V07655-V07876-V05700, data = train)
 summary(tree)
 plot(tree2)
 text(tree2, pretty = 0)
-
 ```
 
 ```{r}
