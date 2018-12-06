@@ -6,7 +6,6 @@ output: html_document
 ---
 
 ```{r, results='hide'}
-library(haven)
 library(tidyr)
 library(dplyr)
 library(mosaic)
@@ -14,12 +13,12 @@ library(tree)
 library(ISLR)
 library(ggplot2)
 library(class)
+library(foreign) 
+library(readr)
 ```
 
 ##Names (eating disorder)
 ```{r, results='hide'}
-library(readr)
-library(haven)
 #raw_data <- read_sav("C:/Users/rocio/Downloads/20240-0001-Data.sav")
 eatdisord_1 <- read_csv("Variblenamefiles/eatdisord_1.csv")
 sub_use_1 <- read_csv("Variblenamefiles/sub_use_1.csv")
@@ -226,13 +225,18 @@ dat.20percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.20)]
 dat.30percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.30)]
 ```
 
+```{r}
+str(dat.30percent)
+```
+
+
 #Tree Decision for predicting depression with 30 day episode 
 ```{r}
+dat.30percent = as.factor(dat.30percent)
 dat.30percent[is.na(dat.30percent)] <- 0
 dat.30percent$V09414 = as.factor(dat.30percent$V09414)
 dat.30percent$V07657 = as.factor(dat.30percent$V07657)
 dat.30percent[ dat.30percent == "5" ] <- 1
-
 set.seed(1)
 train = dat.30percent%>%
   sample_n(10000)
@@ -263,7 +267,7 @@ tree_pred = predict(tree, test, type = "class")
 tree_pred
 table(tree_pred, test$V07657)
 #number of correct predictions is about 78%. 
-(763+3262)/(763+ 318 + 802+3262) = 0.7823129 
+#(763+3262)/(763+ 318 + 802+3262) = 0.7823129 
 
 ```
 
@@ -272,7 +276,7 @@ tree_pred = predict(tree2, test, type = "class")
 tree_pred
 table(tree_pred, test$V07657)
 #prediction correct rate 
-(512+3278)/(512 +302+1053+ 3278) =  0.7366375
+#(512+3278)/(512 +302+1053+ 3278) =  0.7366375
 ```
 
 #Tree Decision for predicting depression with 12month episode 
