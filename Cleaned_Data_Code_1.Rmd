@@ -4,9 +4,9 @@ author: "Hanxiao Lu"
 date: "11/30/2018"
 output: html_document
 ---
+#WHAT ARE LEFT TO DO: BINNING some variables; generate trees; turn predict responses into 1 or 0 
 
 ```{r, results='hide'}
-library(haven)
 library(tidyr)
 library(dplyr)
 library(mosaic)
@@ -14,13 +14,14 @@ library(tree)
 library(ISLR)
 library(ggplot2)
 library(class)
+library(foreign)
+library(readr)
 ```
 
 ##Names (eating disorder)
 ```{r, results='hide'}
-library(readr)
-library(haven)
-#raw_data <- read_sav("C:/Users/rocio/Downloads/20240-0001-Data.sav")
+
+#raw_data <- read.spss("...", to.data.frame = TRUE)
 eatdisord_1 <- read_csv("Variblenamefiles/eatdisord_1.csv")
 sub_use_1 <- read_csv("Variblenamefiles/sub_use_1.csv")
 socnet<- read_csv("Variblenamefiles/socialnetworks.csv")
@@ -46,15 +47,12 @@ suicide<- read_csv("Variblenamefiles/Suicide.csv")
 #Main
 eatdisord_1<- select(eatdisord_1, CPES, Eating_Disorder)
 eatdisord_1= drop_na(eatdisord_1)
-View(eatdisord_1)
 
 #CPES
 CPES_ed= select(eatdisord_1, CPES)
-View(CPES_ed)
 
 #Full_explaination
 full_name= select(eatdisord_1, Eating_Disorder)
-View(full_name)
 
 #Make it a list
 namelist = as.list(full_name)
@@ -73,7 +71,6 @@ data_ed= select(raw_data, CPES_ed$CPES[1:64])
 #Main
 sub_use_1<- select(sub_use_1, CPES)
 sub_use_1= drop_na(sub_use_1)
-#View(sub_use_1)
 
 #Make it a list
 namelist_su = as.list(sub_use_1)
@@ -172,7 +169,9 @@ family= drop_na(family)
 namelist_fam = as.list(family)
 data_fam= select(raw_data, namelist_fam$CPES[1:15])
 ```
+
 #Family and Friends
+
 ```{r, results='hide'}
 #Main
 family_n_friends<- select(family_n_friends, CPES)
@@ -181,7 +180,9 @@ family_n_friends= drop_na(family_n_friends)
 namelist_ff = as.list(family_n_friends)
 data_ff= select(raw_data, namelist_ff$CPES[1:39])
 ```
+
 #Depression Espoide
+
 ```{r, results='hide'}
 #Main
 depress<- select(depress, CPES)
@@ -222,70 +223,89 @@ newdata <- cbind(data_alco, data_dem, data_dep, data_disc, data_ed, data_fam, da
 dat.5percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.05)]
 dat.10percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.10)]
 dat.20percent <- newdata[, -which(colMeans(is.na(newdata)) > 0.20)]
-dat.30 <- newdata[, -which(colMeans(is.na(newdata)) > 0.30)]
+dat.25 <- newdata[, -which(colMeans(is.na(newdata)) > 0.25)]
 ```
 
 ```{r}
-dat.30[ dat.30 == "1" ] <- 1
-dat.30[ dat.30 == "5" ] <- 0
-dat.30[is.na(dat.30)] <- 0
-dat.30$V07657 = as.factor(dat.30$V07657)
-dat.30$V07655 = as.factor(dat.30$V07655)
-dat.30$V07876 = as.factor(dat.30$V07876)
+dat.25$V07655 <- as.numeric(dat.25$V07655)
+dat.25$V07655[dat.25$V07655 == "2"] <- 0 
+```
+
+```{r}
+dat.25 <- dat.25 %>%
+  filter(dat.25$V01993 == "YES")
+```
+
+#boosting 
+```{r}
+library(gbm)
+dat.25 <- dat.25 %>%
+  filter(complete.cases(.))
 
 set.seed(7)
-train = dat.30%>%
+train = dat.25%>%
   sample_frac(.5)
-test = dat.30%>%
+test = dat.25%>%
   setdiff(train)
 
-tree<- tree(V07655~.-V07657 - V07876, data = train)
-summary(tree)
-plot(tree)
-text(tree, pretty = 0)
+boost.tree <- gbm(V07655~.-V07657 - V07876, data = train, distribution = "bernoulli", n.trees = 5000)
+
+summary(boost.tree)
+
+
+```
+
+
+```{r}
+par(mfrow = c(1,2))
+plot(boost.tree, i = "V09414")
+plot(boost.tree, i = "V09389")
 ```
 
 ```{r}
-tree_pred = predict(tree, test, type = "class")
+boost_estimate = predict(boost.tree,
+newdata = test,
+n.trees= 5000,
+type="response")
+
+
+```
+
+```{r}
+histogram(boost_estimate)
+```
+
+#check how many people have suicidal thoughts have endorsed depression
+```{r}
+dat.25 %>%
+  filter(dat.25$V07655 == "1") %>%
+  count()
+```
+
+#tree 
+
+```{r}
+tree1 <- tree(V07655~.-V07657-V07876, data = train)
+summary(tree1)
+plot(tree1)
+text(tree1, pretty = 0)
+```
+
+
+#bagging and random forest 
+```{r}
+library(randomForest)
+set.seed(1)
+bag_boston = randomForest(medv~.,
+data = boston_train,
+mtry = 13,
+importance = TRUE)
+bag_boston
+```
+
+```{r}
+tree_pred = predict(tree1, test, type = "class")
 table(tree_pred, test$V07655)
-```
-
-#Tree Decision for predicting depression with 12month episode 
-```{r}
-dat.30[is.na(dat.30)] <- 5
-dat.30$V07657 = as.factor(dat.30$V07657)
-dat.30$V08311 = as.factor(dat.30$V08311)
-dat.30$V08312 = as.factor(dat.30$V08312)
-dat.30$V07655 = as.factor(dat.30$V07655)
-dat.30$V05700 = as.factor(dat.30$V05700)
-dat.30$V07876 = as.factor(dat.30$V07876)
-dat.30$V03221 = as.factor(dat.30$V03221)
-dat.30$V03223 = as.factor(dat.30$V03223)
-dat.30$V03224 = as.factor(dat.30$V03224)
-dat.30$V03225 = as.factor(dat.30$V03225)
-dat.30$V03226 = as.factor(dat.30$V03226)
-dat.30$V03227 = as.factor(dat.30$V03227)
-dat.30$V03228 = as.factor(dat.30$V03228)
-dat.30$V03229 = as.factor(dat.30$V03229)
-dat.30$V03230 = as.factor(dat.30$V03230)
-dat.30$V03231 = as.factor(dat.30$V03231)
-dat.30$V03330 = as.factor(dat.30$V03330)
-dat.30$V03331 = as.factor(dat.30$V03331)
-dat.30$V03332 = as.factor(dat.30$V03332)
-dat.30$V03333 = as.factor(dat.30$V03333)
-dat.30$V01993 = as.factor(dat.30$V01993)
-
-
-set.seed(7)
-train = dat.30%>%
-  sample_frac(.5)
-test = dat.30%>%
-  setdiff(train)
-
-tree<- tree(V07655~.-V07657 - V07876, data = train)
-summary(tree)
-plot(tree)
-text(tree, pretty = 0)
 ```
 
 
