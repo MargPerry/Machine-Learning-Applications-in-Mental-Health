@@ -3,8 +3,7 @@ title: "New Dataset"
 author: "Hanxiao Lu"
 date: "11/30/2018"
 output: html_document
----
-
+--- 
 ##things to do: labeling the variables?
 ```{r, results='hide'}
 library(tidyr)
