@@ -4,6 +4,7 @@ author: "Hanxiao Lu"
 date: "11/30/2018"
 output: html_document
 --- 
+
 ##things to do: labeling the variables?
 ```{r, results='hide'}
 library(tidyr)
@@ -139,11 +140,13 @@ train = dat.25%>%
 test = dat.25%>%
   setdiff(train)
 
+#12 month episode 
 tree1 <- tree(V07655 ~. -V07876, data=train)
 summary(tree1)
 plot(tree1)
 text(tree1, pretty = 0)
 
+#lifetime episode
 tree2 <- tree(V07876 ~. -V07655, data=train)
 summary(tree2)
 plot(tree2)
@@ -153,10 +156,12 @@ text(tree2, pretty = 0)
 ```{r}
 tree_pred = predict(tree1, test, type = "class")
 table(tree_pred, test$V07655)
+
+tree_pred = predict(tree2, test, type = "class")
+table(tree_pred, test$V07655)
 ```
 
 So it seems like our tree model would not classify any observations into "endorsed". And the accuration rate is $630/(630+163) = 79.5%$. Maybe it finds that it is the easiest and safest to not classify anyone as depressed...
-
 
 
 

@@ -1,0 +1,232 @@
+---
+title: "Predicting Depression through Machine Learning Methods"
+author: "BeeVee Trade"
+date: "12/11/2018"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+--- 
+
+```{r, message=FALSE}
+library(tidyr)
+library(dplyr)
+library(mosaic)
+library(tree)
+library(ISLR)
+library(ggplot2)
+library(class)
+library(foreign)
+library(readr)
+library(gbm)
+```
+
+#Introduction 
+
+Mental health is an elusive subject of study. It is highly heterogeneous? and has a  broad spectrum of symptoms and severity. Major Depressive Disorders (MDD) affects about 40 million adults in the United States, which begs the question: Can we predict whether or not someone will develop a form of depression? We built a model that attempts to predict if someone is depressed based on key variables. We have selected themes that extend from social networks to substance use. The hope is that we will be able to draw a predictive model from within these themes. The issue of MDD has become more predanite in recent years as the rates for diagnosis have increased. Depression affects both the mental and physical state of an individual. It can cause feelings of helplessness, a loss of interest in hobbies, changes in weight and appetite, and in extreme cases can lead to death.  It is a delicate subject no matter how it is brought up and is often taboo to discuss. Machine learning techniques will allow us to see if we can determine who is most at risk and then be able to enact preventative measures. 
+Within our own community there are many who suffer from depression and there are many more who have yet to be diagnosed. College students are at high risk of developing depression, as there is an acute combination of high stress, availability to substances, and a possible lack of a support group, which all contribute to poor mental health and poor self-care. Depression is close to many of our hearts, and addressing this issue might help us lead better and happier lives.  Therefore, we hope to investigate the question about the determinants of major depressive disorders  (social network, environmental, personal, etc., and  comorbidities, like eating disorders) as these are relevant for both college students and the general public.  Specific questions that can be asked: Are students that engage more time in social activity/ maintaining social network less prone to be diagnosed with MDD? Does increased frequency of substance use increase the chance of being diagnosed with MDD and increase the episode?  As a group the key predictors we are interested in are eating disorders, family relationship, social network, personality traits, substance use (tobacco and alcohol), and suicidal thoughts and tendencies.
+
+#Data 
+
+We used a large joint dataset of three nationally representative surveys: the National Comorbidity Survey Replication (NCS-R), the National Survey of American Life (NSAL), and the National Latino and Asian American Study (NLAAS).  This Collaborative Psychiatric Epidemiology Surveys (CPES) was initiated in recognition of the need for contemporary, comprehensive epidemiological data regarding the distributions, correlates and risk factors of mental disorders among the general population with special emphasis on minority groups. Its data collection covers a total of 252 geographic areas across United States and contains a total of 20013 observations and 5543 variables. All variables are also crosswalked under each category of mental disorder.  
+
+#Data Cleaning and Methods
+
+From the numerical summaries of these variables from the Suicide subset of the data we can see that there are some categorical variables, but most are numerical that depend on a larger range of numbers, and in this case the numbers represent the ages of the people involved in the studies. With our data we learn that most people said no to seriously committing suicide both in the last 12 months and at all. But from the other variables we can see that the people that have thought about committing suicide had these thoughts in their 20s. There are many NA values, so the summaries don’t represent all of the observations from the data.
+
+We also realize that we need to convert some numeric values to binary categorical values, for instance, there are two numbers, 1(no) and 5(yes), are used for indicating ICD alcohol dependence (lifetime). But we believe it will be confusing to use it as numeric and we want to convert it into a categorical variable. This is important to make sure about our consistency in treating variables with two categories as categorical, and treating variables with multiple categories as numeric. There is a huge inconsistency in the values available for observations used in different categories. For instance, it is hard to compare the data from variables under category eating disorder with variables from category family cohesion due to two datasets being actually collected from two separate surveys. Even though these two datasets were compiled together, it shows that the observations from one survey do not necessarily include variables from another survey. Therefore, we believe that it is essential for us to go back to our cross-walk original dataset again to select variables that are all from the same survey, instead of the collaborative survey that contains observations from other surveys. 
+
+The same problem is also shown when we tried to use tree decision as our main model. We were very excited to use tree decision model, however, our model turned out to be a disaster. We only got one node and aren’t sure the cause. We believe that it might be due to missing values in ou data.  Our data worked well with KNN, mainly because KNN does not have any assumptions. The only obstacle was that we were required to filter out observations that had any missing values, however this still left us with over 1,500 for the method. As for logistic regression, our data met the assumption that the response variable is binary. We also tested on large enough data (a sample of 1670). However, we are concerned about potential multicollinearity, such as seriously contemplating suicide and actually attempting suicide. It may suffice that we pick only one of these variables. 
+
+We believe that we are having major issues with the variables we are using right now. Many numeric variables containing only two values should be converted into categorical variables. And we need to revisit our initial category and variable selection by making sure all variables are from the same survey, instead of the collaborative survey. Even though it is painful to acknowledge this mistake we made earlier on about variable selection, we have learned a lot about reading and understanding complex collaborative survey datasets. And then we will try tree decision or logistic model again
+
+However, it was at the very late stage of our data analysis did we realise that we have imported the SPSS dataset in the wrong format due to the wrong package. Therefore, it was no surprising that we were frustrated with data class conversion because all of them were in the wrong class. Thus, there was always an error here and there with variable selection and conversion. But this is a good learning experience in the future for us to always check the normality of the data structure before deciding the next step. 
+
+
+```{r, message=FALSE}
+newdata= read.csv('newdata.csv')
+#filter variables with less than 25% missing values 
+dat.25 <- newdata[, -which(colMeans(is.na(newdata)) > 0.25)]
+```
+
+
+```{r, message = FALSE}
+#converting the response variable into either 1 or 0 and remove observations with missing values 
+dat.25$X <- NULL
+dat.25$V07657 <- NULL
+dat.25$V07876 <- NULL
+
+dat.25$V07655 <- as.numeric(dat.25$V07655)
+dat.25$V07655[dat.25$V07655 == "2"] <- 0 
+
+dat.25 <- dat.25 %>%
+  filter(complete.cases(.))
+```
+
+#Results 
+
+When we first ran our decision tree model we found that we had created trees with no prediction values as all the nodes are zero. This is what lead to the second wave of data cleaning.
+After we cleaned our data for the second time, we found through the decision tree model that there were three main predictors of endorsed depressive 12 month episode were  number of years school the mother completed, religious preference, and highest grade of school or college completed. We found that the individual tree models predicted with 59% overall accuracy rate, a 49 % accuracy rate for the model to predict if someone will be depressed, and 62 % accuracy rate for the model to predict if someone will not be depressed. However when we ran the boosting trees our model predicts with about 60% accuracy when using test data. 
+
+```{r}
+#because the orignial percentage of depressed cases in the overall dataset is very small (only 8%).
+#we restore the balance by adding one more condition: whether the person has any serious suicidal thoughts. Filter out the observations in which the answer is YES. 
+
+#the new percentage is 20%
+
+dat.25 <- dat.25 %>%
+  filter(dat.25$V01993 == "YES")
+dat.25$V01993 <- NULL
+
+#there are 319 out of 1597(20%) are diagnosed with depression 
+```
+
+#Using classification tree
+
+```{r}
+#turning logi and numeric into factor 
+
+dat.25$V03221 <- as.factor(dat.25$V03221 )
+dat.25$V03223 <- as.factor(dat.25$V03223 )
+dat.25$V03224 <- as.factor(dat.25$V03224 )
+dat.25$V03225 <- as.factor(dat.25$V03225 )
+dat.25$V03226 <- as.factor(dat.25$V03226 )
+dat.25$V03227 <- as.factor(dat.25$V03227 )
+dat.25$V03228 <- as.factor(dat.25$V03228 )
+dat.25$V03229 <- as.factor(dat.25$V03229 )
+dat.25$V03230 <- as.factor(dat.25$V03230 )
+dat.25$V03231 <- as.factor(dat.25$V03231 )
+dat.25$V09389 <- as.factor(dat.25$V09389)
+dat.25$V07655 <- as.factor(dat.25$V07655 )
+
+set.seed(1)
+train = dat.25%>%
+  sample_frac(.5)
+test = dat.25%>%
+  setdiff(train)
+
+tree1 <- tree(V07655 ~., data=train)
+summary(tree1)
+plot(tree1)
+text(tree1, pretty = 0)
+
+```
+
+
+```{r}
+tree_pred = predict(tree1, test, type = "class")
+table(tree_pred, test$V07655)
+
+```
+
+So it seems like our tree model would not classify any observations into "endorsed". The accuration rate is $629/(629+163) = 79.5%$. Maybe it finds that it is the easiest and safest to not classify anyone as depressed. However, this model yields no use to real-life application if it can not predict anyone to be endorsed with depression.
+
+#Using boosting tree
+
+```{r}
+
+dat.25$V07655 <- as.numeric(dat.25$V07655)
+#here because it's tricky to transfer a factor to numeric and change to 1 again
+#we use 0 to denote endorsed depression 
+#we use 1 to denote not endorsed with depression 
+dat.25$V07655[dat.25$V07655 == "2"] <- 0
+
+set.seed(2)
+train = dat.25%>%
+  sample_frac(.5)
+test = dat.25%>%
+  setdiff(train)
+
+boost.tree = gbm(V07655~., data = train, distribution = "bernoulli", n.trees = 5000, shrinkage = 0.01)
+summary(boost.tree)
+
+```
+
+Here we can see that V09389 (number of years mother has completed), V09414(religious preference) and V03085 (number of education years) are three very important variables. We can also produce partial dependence plots for these two variables. These plots illustrate the marginal effect of the selected variables on the response after integrating out the other variables. 
+
+```{r}
+par(mfrow = c(1,2))
+plot(boost.tree, i = "V09389")
+plot(boost.tree, i = "V09414")
+plot(boost.tree, i = "V03085")
+```
+
+Use the boosting model to predict the response on the test data. 
+
+```{r}
+boost.pred = predict(boost.tree, test, type = "response", n.trees=5000)
+histogram(boost.pred)
+#Remember we use 0 to denote endorsed depression 
+#we use 1 to denote not endorsed with depression 
+```
+
+So the result shows that the majority have more than 80% of chance to be not endorsed with depression. 
+
+```{r}
+#we use 0.8 as cutoff point and we switch the denotation again.
+#1 means endorsed with depression
+#0 means not endorsed with depression 
+boost.pred.class = ifelse(boost.pred > 0.85, 0,1)
+table(boost.pred.class, test$V07655, dnn = c("pred", "test"))
+```
+
+$(396+62)/(396+62+245+90) =   0.5775536$ so we have around 57% accuracy. 
+
+#Discussion 
+
+It is interesting that for unknown reasons, our classification tree with 20% observations endorsed with depression didn't assign any test data into depressed. We wonder how it would be different if we raise the percentage to 50% by selecting an equal number of unendorsed cases with endorsed cases. 
+
+```{r}
+notendorsed <- dat.25 %>%
+  filter(dat.25$V07655 == "1")
+
+notendorsed = notendorsed[sample(nrow(notendorsed), 319), ]
+endorsed.dep <- dat.25 %>%
+  filter(dat.25$V07655 == "0")
+
+newtrain = rbind(endorsed.dep, notendorsed)
+newtrain$V07655 = as.factor(newtrain$V07655 )
+
+set.seed(6)
+train = newtrain%>%
+  sample_frac(.5)
+test = newtrain%>%
+  setdiff(train)
+
+tree4 <- tree(V07655 ~., data=train)
+summary(tree4)
+plot(tree4)
+text(tree4, pretty = 0)
+
+tree_pred = predict(tree4, test, type = "class")
+table(tree_pred, test$V07655)
+
+#correct classfication rate = (69+83)/319 = 0.476489
+```
+
+As we can see above, afte we change the balance of depressed and not depressed observations in the train and test dataset, we can easily use classfication tree for seemingly good results. However, this is not a random sample. We are curious to see how this will work for our original dataset, and we ran this model again. Surprisingly, the tree actually correctly classfy 2 of them as depressed. 
+
+```{r}
+set.seed(98)
+dat.25$V07655 = as.factor(dat.25$V07655 )
+train = dat.25%>%
+  sample_frac(.5)
+test = dat.25%>%
+  setdiff(train)
+
+tree4 <- tree(V07655 ~., data=train)
+plot(tree4)
+text(tree4, pretty = 0)
+
+tree_pred = predict(tree4, test, type = "class")
+table(tree_pred, test$V07655)
+#correct prediction rate (2+619)/794 = 78% 
+#note: 1 is not depressed and 0 is depressed 
+```
+
+
+In all, our biggest challenge when building the model was trying to find a balance so that tree would not overpredict or underpredict. At first we had a tree with 80% accuracy, however this high level of accuracy was because all of the observations were predicted to have no depression, causing most of the observations to be “properly predicted.” To try to have the tree have a somewhat small amount of prediction, we filtered for specific data as a form of control. We had a sample that only included observations which experienced suicidal thoughts, and then included artificially selected observations that were positive for depression. However, the model for the first time still gives no prediction of depression and for the second time, gives 2 predictions of depression. After we artificially increase the percentage of endorsed depressive individuals among all observations from 20% to 50%, we can see a better result as shown above. However, it shouldn't take the researcher to purposely change the ratio to make the model work, instead, we should reflect if there is any problem with our model, our observation filtering, and our variable selection. It is likely that our model just has really weak predictors with little to none predicting power of depression. Therefore, for every predictor, the tree classify a very small group of people into depressed, and therefore, even less people will be predicted to be depressed using the second predictor. Thus, at the end, no observation will be left to be classified as depressed. Nonetheless, we can still think about another way to increase the percentage by identifying another strong predictor, something similar to "suicidal thoughts" to increase the balance in a more natural way. Luckily, we can still identify three relatively stronger predictors for depression. For future research, we may consider ways in which we can test a range of ratio of the two levels of response variable to see where the key cutoff lies. 
+
+Last, we hope to revisit our original giant dataset to examine the data structure more closely. It is likely that we have omitted lots of important information by solely filtering all the variables and observations based on whether it has any missing values or not. We should look at more data cleaning strategies and to know specifically about how to deal with missing values from different types variables. There are also some numeric variables in the original dataset that we may consider using in the future. It is also essential to revisit our research question to see what is the question that we are really interested in investigating. Randomly looking for variables and seeking any correlation is like looking for a needle in the sea. It’s not particularly fruitful without having a more specific goal in mind. This is especially critical for how we are going to choose variables of interest, and then how we should weigh different methods of data cleaning. 
+
+
+

@@ -1,0 +1,692 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Predicting Depression through Machine Learning Methods},
+            pdfauthor={BeeVee Trade},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+  \title{Predicting Depression through Machine Learning Methods}
+  \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+  \author{BeeVee Trade}
+  \preauthor{\centering\large\emph}
+  \postauthor{\par}
+  \predate{\centering\large\emph}
+  \postdate{\par}
+  \date{12/11/2018}
+
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyr)}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\KeywordTok{library}\NormalTok{(mosaic)}
+\KeywordTok{library}\NormalTok{(tree)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tree' was built under R version 3.4.4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(ISLR)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(class)}
+\KeywordTok{library}\NormalTok{(foreign)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'foreign' was built under R version 3.4.4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(readr)}
+\KeywordTok{library}\NormalTok{(gbm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'gbm' was built under R version 3.4.4
+\end{verbatim}
+
+\section{Introduction}\label{introduction}
+
+Mental health is an elusive subject of study. It is highly
+heterogeneous? and has a broad spectrum of symptoms and severity. Major
+Depressive Disorders (MDD) affects about 40 million adults in the United
+States, which begs the question: Can we predict whether or not someone
+will develop a form of depression? We built a model that attempts to
+predict if someone is depressed based on key variables. We have selected
+themes that extend from social networks to substance use. The hope is
+that we will be able to draw a predictive model from within these
+themes. The issue of MDD has become more predanite in recent years as
+the rates for diagnosis have increased. Depression affects both the
+mental and physical state of an individual. It can cause feelings of
+helplessness, a loss of interest in hobbies, changes in weight and
+appetite, and in extreme cases can lead to death. It is a delicate
+subject no matter how it is brought up and is often taboo to discuss.
+Machine learning techniques will allow us to see if we can determine who
+is most at risk and then be able to enact preventative measures. Within
+our own community there are many who suffer from depression and there
+are many more who have yet to be diagnosed. College students are at high
+risk of developing depression, as there is an acute combination of high
+stress, availability to substances, and a possible lack of a support
+group, which all contribute to poor mental health and poor self-care.
+Depression is close to many of our hearts, and addressing this issue
+might help us lead better and happier lives. Therefore, we hope to
+investigate the question about the determinants of major depressive
+disorders (social network, environmental, personal, etc., and
+comorbidities, like eating disorders) as these are relevant for both
+college students and the general public. Specific questions that can be
+asked: Are students that engage more time in social activity/
+maintaining social network less prone to be diagnosed with MDD? Does
+increased frequency of substance use increase the chance of being
+diagnosed with MDD and increase the episode? As a group the key
+predictors we are interested in are eating disorders, family
+relationship, social network, personality traits, substance use (tobacco
+and alcohol), and suicidal thoughts and tendencies.
+
+\section{Data}\label{data}
+
+We used a large joint dataset of three nationally representative
+surveys: the National Comorbidity Survey Replication (NCS-R), the
+National Survey of American Life (NSAL), and the National Latino and
+Asian American Study (NLAAS). This Collaborative Psychiatric
+Epidemiology Surveys (CPES) was initiated in recognition of the need for
+contemporary, comprehensive epidemiological data regarding the
+distributions, correlates and risk factors of mental disorders among the
+general population with special emphasis on minority groups. Its data
+collection covers a total of 252 geographic areas across United States
+and contains a total of 20013 observations and 5543 variables. All
+variables are also crosswalked under each category of mental disorder.
+
+\section{Data Cleaning and Methods}\label{data-cleaning-and-methods}
+
+From the numerical summaries of these variables from the Suicide subset
+of the data we can see that there are some categorical variables, but
+most are numerical that depend on a larger range of numbers, and in this
+case the numbers represent the ages of the people involved in the
+studies. With our data we learn that most people said no to seriously
+committing suicide both in the last 12 months and at all. But from the
+other variables we can see that the people that have thought about
+committing suicide had these thoughts in their 20s. There are many NA
+values, so the summaries don't represent all of the observations from
+the data.
+
+We also realize that we need to convert some numeric values to binary
+categorical values, for instance, there are two numbers, 1(no) and
+5(yes), are used for indicating ICD alcohol dependence (lifetime). But
+we believe it will be confusing to use it as numeric and we want to
+convert it into a categorical variable. This is important to make sure
+about our consistency in treating variables with two categories as
+categorical, and treating variables with multiple categories as numeric.
+There is a huge inconsistency in the values available for observations
+used in different categories. For instance, it is hard to compare the
+data from variables under category eating disorder with variables from
+category family cohesion due to two datasets being actually collected
+from two separate surveys. Even though these two datasets were compiled
+together, it shows that the observations from one survey do not
+necessarily include variables from another survey. Therefore, we believe
+that it is essential for us to go back to our cross-walk original
+dataset again to select variables that are all from the same survey,
+instead of the collaborative survey that contains observations from
+other surveys.
+
+The same problem is also shown when we tried to use tree decision as our
+main model. We were very excited to use tree decision model, however,
+our model turned out to be a disaster. We only got one node and aren't
+sure the cause. We believe that it might be due to missing values in ou
+data. Our data worked well with KNN, mainly because KNN does not have
+any assumptions. The only obstacle was that we were required to filter
+out observations that had any missing values, however this still left us
+with over 1,500 for the method. As for logistic regression, our data met
+the assumption that the response variable is binary. We also tested on
+large enough data (a sample of 1670). However, we are concerned about
+potential multicollinearity, such as seriously contemplating suicide and
+actually attempting suicide. It may suffice that we pick only one of
+these variables.
+
+We believe that we are having major issues with the variables we are
+using right now. Many numeric variables containing only two values
+should be converted into categorical variables. And we need to revisit
+our initial category and variable selection by making sure all variables
+are from the same survey, instead of the collaborative survey. Even
+though it is painful to acknowledge this mistake we made earlier on
+about variable selection, we have learned a lot about reading and
+understanding complex collaborative survey datasets. And then we will
+try tree decision or logistic model again
+
+However, it was at the very late stage of our data analysis did we
+realise that we have imported the SPSS dataset in the wrong format due
+to the wrong package. Therefore, it was no surprising that we were
+frustrated with data class conversion because all of them were in the
+wrong class. Thus, there was always an error here and there with
+variable selection and conversion. But this is a good learning
+experience in the future for us to always check the normality of the
+data structure before deciding the next step.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{newdata=}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'newdata.csv'}\NormalTok{)}
+\CommentTok{#filter variables with less than 25% missing values }
+\NormalTok{dat.}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\NormalTok{newdata[, }\OperatorTok{-}\KeywordTok{which}\NormalTok{(}\KeywordTok{colMeans}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(newdata)) }\OperatorTok{>}\StringTok{ }\FloatTok{0.25}\NormalTok{)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#converting the response variable into either 1 or 0 and remove observations with missing values }
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{X <-}\StringTok{ }\OtherTok{NULL}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07657 <-}\StringTok{ }\OtherTok{NULL}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07876 <-}\StringTok{ }\OtherTok{NULL}
+
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655)}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655[dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 }\OperatorTok{==}\StringTok{ "2"}\NormalTok{] <-}\StringTok{ }\DecValTok{0} 
+
+\NormalTok{dat.}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\NormalTok{dat.}\DecValTok{25} \OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(}\KeywordTok{complete.cases}\NormalTok{(.))}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Results}\label{results}
+
+When we first ran our decision tree model we found that we had created
+trees with no prediction values as all the nodes are zero. This is what
+lead to the second wave of data cleaning. After we cleaned our data for
+the second time, we found through the decision tree model that there
+were three main predictors of endorsed depressive 12 month episode were
+number of years school the mother completed, religious preference, and
+highest grade of school or college completed. We found that the
+individual tree models predicted with 59\% overall accuracy rate, a 49
+\% accuracy rate for the model to predict if someone will be depressed,
+and 62 \% accuracy rate for the model to predict if someone will not be
+depressed. However when we ran the boosting trees our model predicts
+with about 60\% accuracy when using test data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#because the orignial percentage of depressed cases in the overall dataset is very small (only 8%).}
+\CommentTok{#we restore the balance by adding one more condition: whether the person has any serious suicidal thoughts. Filter out the observations in which the answer is YES. }
+
+\CommentTok{#the new percentage is 20%}
+
+\NormalTok{dat.}\DecValTok{25}\NormalTok{ <-}\StringTok{ }\NormalTok{dat.}\DecValTok{25} \OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V01993 }\OperatorTok{==}\StringTok{ "YES"}\NormalTok{)}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V01993 <-}\StringTok{ }\OtherTok{NULL}
+
+\CommentTok{#there are 319 out of 1597(20%) are diagnosed with depression }
+\end{Highlighting}
+\end{Shaded}
+
+\section{Using classification tree}\label{using-classification-tree}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#turning logi and numeric into factor }
+
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03221 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03221 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03223 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03223 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03224 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03224 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03225 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03225 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03226 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03226 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03227 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03227 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03228 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03228 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03229 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03229 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03230 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03230 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03231 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V03231 )}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V09389 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V09389)}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 <-}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 )}
+
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1}\NormalTok{)}
+\NormalTok{train =}\StringTok{ }\NormalTok{dat.}\DecValTok{25}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_frac}\NormalTok{(.}\DecValTok{5}\NormalTok{)}
+\NormalTok{test =}\StringTok{ }\NormalTok{dat.}\DecValTok{25}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{setdiff}\NormalTok{(train)}
+
+\NormalTok{tree1 <-}\StringTok{ }\KeywordTok{tree}\NormalTok{(V07655 }\OperatorTok{~}\NormalTok{., }\DataTypeTok{data=}\NormalTok{train)}
+\KeywordTok{summary}\NormalTok{(tree1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Classification tree:
+## tree(formula = V07655 ~ ., data = train)
+## Variables actually used in tree construction:
+## [1] "V03085" "V09389" "V09414" "V09409"
+## Number of terminal nodes:  5 
+## Residual mean deviance:  0.9448 = 749.3 / 793 
+## Misclassification error rate: 0.1942 = 155 / 798
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(tree1)}
+\KeywordTok{text}\NormalTok{(tree1, }\DataTypeTok{pretty =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Paper_BeeVee_Trade_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tree_pred =}\StringTok{ }\KeywordTok{predict}\NormalTok{(tree1, test, }\DataTypeTok{type =} \StringTok{"class"}\NormalTok{)}
+\KeywordTok{table}\NormalTok{(tree_pred, test}\OperatorTok{$}\NormalTok{V07655)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          
+## tree_pred   0   1
+##         0 629 163
+##         1   0   0
+\end{verbatim}
+
+So it seems like our tree model would not classify any observations into
+``endorsed''. The accuration rate is \(629/(629+163) = 79.5%\). Maybe it
+finds that it is the easiest and safest to not classify anyone as
+depressed. However, this model yields no use to real-life application if
+it can not predict anyone to be endorsed with depression.
+
+\section{Using boosting tree}\label{using-boosting-tree}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 <-}\StringTok{ }\KeywordTok{as.numeric}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655)}
+\CommentTok{#here because it's tricky to transfer a factor to numeric and change to 1 again}
+\CommentTok{#we use 0 to denote endorsed depression }
+\CommentTok{#we use 1 to denote not endorsed with depression }
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655[dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 }\OperatorTok{==}\StringTok{ "2"}\NormalTok{] <-}\StringTok{ }\DecValTok{0}
+
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2}\NormalTok{)}
+\NormalTok{train =}\StringTok{ }\NormalTok{dat.}\DecValTok{25}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_frac}\NormalTok{(.}\DecValTok{5}\NormalTok{)}
+\NormalTok{test =}\StringTok{ }\NormalTok{dat.}\DecValTok{25}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{setdiff}\NormalTok{(train)}
+
+\NormalTok{boost.tree =}\StringTok{ }\KeywordTok{gbm}\NormalTok{(V07655}\OperatorTok{~}\NormalTok{., }\DataTypeTok{data =}\NormalTok{ train, }\DataTypeTok{distribution =} \StringTok{"bernoulli"}\NormalTok{, }\DataTypeTok{n.trees =} \DecValTok{5000}\NormalTok{, }\DataTypeTok{shrinkage =} \FloatTok{0.01}\NormalTok{)}
+\KeywordTok{summary}\NormalTok{(boost.tree)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Paper_BeeVee_Trade_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{verbatim}
+##           var     rel.inf
+## V09414 V09414 28.88226936
+## V09389 V09389 28.43383360
+## V03085 V03085 27.69975993
+## V09409 V09409  3.42879006
+## V08311 V08311  2.78094329
+## V09413 V09413  2.39421819
+## V03223 V03223  1.33302562
+## V03230 V03230  0.86225369
+## V03333 V03333  0.81172284
+## V03224 V03224  0.71726434
+## V03221 V03221  0.48757214
+## V03226 V03226  0.39903275
+## V03225 V03225  0.32983124
+## V03228 V03228  0.26435754
+## V03331 V03331  0.25236403
+## V03330 V03330  0.22303949
+## V03332 V03332  0.21786383
+## V03227 V03227  0.18739232
+## V08515 V08515  0.10480360
+## V03231 V03231  0.08973823
+## V05700 V05700  0.06207487
+## V03229 V03229  0.03784905
+## V08312 V08312  0.00000000
+\end{verbatim}
+
+Here we can see that V09389 (number of years mother has completed),
+V09414(religious preference) and V03085 (number of education years) are
+three very important variables. We can also produce partial dependence
+plots for these two variables. These plots illustrate the marginal
+effect of the selected variables on the response after integrating out
+the other variables.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{par}\NormalTok{(}\DataTypeTok{mfrow =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{))}
+\KeywordTok{plot}\NormalTok{(boost.tree, }\DataTypeTok{i =} \StringTok{"V09389"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Paper_BeeVee_Trade_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(boost.tree, }\DataTypeTok{i =} \StringTok{"V09414"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Paper_BeeVee_Trade_files/figure-latex/unnamed-chunk-8-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(boost.tree, }\DataTypeTok{i =} \StringTok{"V03085"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Paper_BeeVee_Trade_files/figure-latex/unnamed-chunk-8-3.pdf}
+
+Use the boosting model to predict the response on the test data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{boost.pred =}\StringTok{ }\KeywordTok{predict}\NormalTok{(boost.tree, test, }\DataTypeTok{type =} \StringTok{"response"}\NormalTok{, }\DataTypeTok{n.trees=}\DecValTok{5000}\NormalTok{)}
+\KeywordTok{histogram}\NormalTok{(boost.pred)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Paper_BeeVee_Trade_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#Remember we use 0 to denote endorsed depression }
+\CommentTok{#we use 1 to denote not endorsed with depression }
+\end{Highlighting}
+\end{Shaded}
+
+So the result shows that the majority have more than 80\% of chance to
+be not endorsed with depression.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#we use 0.8 as cutoff point and we switch the denotation again.}
+\CommentTok{#1 means endorsed with depression}
+\CommentTok{#0 means not endorsed with depression }
+\NormalTok{boost.pred.class =}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(boost.pred }\OperatorTok{>}\StringTok{ }\FloatTok{0.85}\NormalTok{, }\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+\KeywordTok{table}\NormalTok{(boost.pred.class, test}\OperatorTok{$}\NormalTok{V07655, }\DataTypeTok{dnn =} \KeywordTok{c}\NormalTok{(}\StringTok{"pred"}\NormalTok{, }\StringTok{"test"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     test
+## pred   0   1
+##    0  62 245
+##    1  90 396
+\end{verbatim}
+
+\((396+62)/(396+62+245+90) = 0.5775536\) so we have around 57\%
+accuracy.
+
+\section{Discussion}\label{discussion}
+
+It is interesting that for unknown reasons, our classification tree with
+20\% observations endorsed with depression didn't assign any test data
+into depressed. We wonder how it would be different if we raise the
+percentage to 50\% by selecting an equal number of unendorsed cases with
+endorsed cases.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{notendorsed <-}\StringTok{ }\NormalTok{dat.}\DecValTok{25} \OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 }\OperatorTok{==}\StringTok{ "1"}\NormalTok{)}
+
+\NormalTok{notendorsed =}\StringTok{ }\NormalTok{notendorsed[}\KeywordTok{sample}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(notendorsed), }\DecValTok{319}\NormalTok{), ]}
+\NormalTok{endorsed.dep <-}\StringTok{ }\NormalTok{dat.}\DecValTok{25} \OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 }\OperatorTok{==}\StringTok{ "0"}\NormalTok{)}
+
+\NormalTok{newtrain =}\StringTok{ }\KeywordTok{rbind}\NormalTok{(endorsed.dep, notendorsed)}
+\NormalTok{newtrain}\OperatorTok{$}\NormalTok{V07655 =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(newtrain}\OperatorTok{$}\NormalTok{V07655 )}
+
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{6}\NormalTok{)}
+\NormalTok{train =}\StringTok{ }\NormalTok{newtrain}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_frac}\NormalTok{(.}\DecValTok{5}\NormalTok{)}
+\NormalTok{test =}\StringTok{ }\NormalTok{newtrain}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{setdiff}\NormalTok{(train)}
+
+\NormalTok{tree4 <-}\StringTok{ }\KeywordTok{tree}\NormalTok{(V07655 }\OperatorTok{~}\NormalTok{., }\DataTypeTok{data=}\NormalTok{train)}
+\KeywordTok{summary}\NormalTok{(tree4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Classification tree:
+## tree(formula = V07655 ~ ., data = train)
+## Variables actually used in tree construction:
+## [1] "V09414" "V03085" "V09389" "V09409" "V08515" "V03331" "V03228"
+## Number of terminal nodes:  22 
+## Residual mean deviance:  0.9432 = 280.1 / 297 
+## Misclassification error rate: 0.2633 = 84 / 319
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{plot}\NormalTok{(tree4)}
+\KeywordTok{text}\NormalTok{(tree4, }\DataTypeTok{pretty =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Paper_BeeVee_Trade_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tree_pred =}\StringTok{ }\KeywordTok{predict}\NormalTok{(tree4, test, }\DataTypeTok{type =} \StringTok{"class"}\NormalTok{)}
+\KeywordTok{table}\NormalTok{(tree_pred, test}\OperatorTok{$}\NormalTok{V07655)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          
+## tree_pred  0  1
+##         0 91 90
+##         1 62 75
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#correct classfication rate = (69+83)/319 = 0.476489}
+\end{Highlighting}
+\end{Shaded}
+
+As we can see above, afte we change the balance of depressed and not
+depressed observations in the train and test dataset, we can easily use
+classfication tree for seemingly good results. However, this is not a
+random sample. We are curious to see how this will work for our original
+dataset, and we ran this model again. Surprisingly, the tree actually
+correctly classfy 2 of them as depressed.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{98}\NormalTok{)}
+\NormalTok{dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 =}\StringTok{ }\KeywordTok{as.factor}\NormalTok{(dat.}\DecValTok{25}\OperatorTok{$}\NormalTok{V07655 )}
+\NormalTok{train =}\StringTok{ }\NormalTok{dat.}\DecValTok{25}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{sample_frac}\NormalTok{(.}\DecValTok{5}\NormalTok{)}
+\NormalTok{test =}\StringTok{ }\NormalTok{dat.}\DecValTok{25}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{setdiff}\NormalTok{(train)}
+
+\NormalTok{tree4 <-}\StringTok{ }\KeywordTok{tree}\NormalTok{(V07655 }\OperatorTok{~}\NormalTok{., }\DataTypeTok{data=}\NormalTok{train)}
+\KeywordTok{plot}\NormalTok{(tree4)}
+\KeywordTok{text}\NormalTok{(tree4, }\DataTypeTok{pretty =} \DecValTok{0}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Paper_BeeVee_Trade_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{tree_pred =}\StringTok{ }\KeywordTok{predict}\NormalTok{(tree4, test, }\DataTypeTok{type =} \StringTok{"class"}\NormalTok{)}
+\KeywordTok{table}\NormalTok{(tree_pred, test}\OperatorTok{$}\NormalTok{V07655)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          
+## tree_pred   0   1
+##         0   2  18
+##         1 155 619
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{#correct prediction rate (2+619)/794 = 78% }
+\CommentTok{#note: 1 is not depressed and 0 is depressed }
+\end{Highlighting}
+\end{Shaded}
+
+In all, our biggest challenge when building the model was trying to find
+a balance so that tree would not overpredict or underpredict. At first
+we had a tree with 80\% accuracy, however this high level of accuracy
+was because all of the observations were predicted to have no
+depression, causing most of the observations to be ``properly
+predicted.'' To try to have the tree have a somewhat small amount of
+prediction, we filtered for specific data as a form of control. We had a
+sample that only included observations which experienced suicidal
+thoughts, and then included artificially selected observations that were
+positive for depression. However, the model for the first time still
+gives no prediction of depression and for the second time, gives 2
+predictions of depression. After we artificially increase the percentage
+of endorsed depressive individuals among all observations from 20\% to
+50\%, we can see a better result as shown above. However, it shouldn't
+take the researcher to purposely change the ratio to make the model
+work, instead, we should reflect if there is any problem with our model,
+our observation filtering, and our variable selection. It is likely that
+our model just has really weak predictors with little to none predicting
+power of depression. Therefore, for every predictor, the tree classify a
+very small group of people into depressed, and therefore, even less
+people will be predicted to be depressed using the second predictor.
+Thus, at the end, no observation will be left to be classified as
+depressed. Nonetheless, we can still think about another way to increase
+the percentage by identifying another strong predictor, something
+similar to ``suicidal thoughts'' to increase the balance in a more
+natural way. Luckily, we can still identify three relatively stronger
+predictors for depression. For future research, we may consider ways in
+which we can test a range of ratio of the two levels of response
+variable to see where the key cutoff lies.
+
+Last, we hope to revisit our original giant dataset to examine the data
+structure more closely. It is likely that we have omitted lots of
+important information by solely filtering all the variables and
+observations based on whether it has any missing values or not. We
+should look at more data cleaning strategies and to know specifically
+about how to deal with missing values from different types variables.
+There are also some numeric variables in the original dataset that we
+may consider using in the future. It is also essential to revisit our
+research question to see what is the question that we are really
+interested in investigating. Randomly looking for variables and seeking
+any correlation is like looking for a needle in the sea. It's not
+particularly fruitful without having a more specific goal in mind. This
+is especially critical for how we are going to choose variables of
+interest, and then how we should weigh different methods of data
+cleaning.
+
+
+\end{document}
